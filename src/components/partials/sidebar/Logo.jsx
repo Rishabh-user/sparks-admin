@@ -52,7 +52,7 @@ const SidebarLogo = ({ menuHover }) => {
         </div>
       </Link>
 
-      {(!collapsed ) && (
+      {(!collapsed || menuHover ) && (
         <div
           onClick={() => setMenuCollapsed(!collapsed)}
           className={`h-4 w-4 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
