@@ -7,7 +7,7 @@ import useSemiDark from "@/hooks/useSemiDark";
 import useSkin from "@/hooks/useSkin";
 
 // import images
-import MobileLogo from "@/assets/images/logo/logo.png";
+import MobileLogo from "@/assets/images/logo/logo.svg";
 import MobileLogoWhite from "@/assets/images/logo/logo-c-white.svg";
 
 const SidebarLogo = ({ menuHover }) => {
@@ -43,14 +43,14 @@ const SidebarLogo = ({ menuHover }) => {
           {(!collapsed || menuHover) && (
             <div>
               <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-                S
+                qwerty
               </h1>
             </div>
           )}
         </div>
       </Link>
 
-      {(!collapsed || menuHover) && (
+      {(!collapsed ) && (
         <div
           onClick={() => setMenuCollapsed(!collapsed)}
           className={`h-4 w-4 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
