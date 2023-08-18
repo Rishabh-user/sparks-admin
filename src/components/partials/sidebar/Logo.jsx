@@ -39,14 +39,6 @@ const SidebarLogo = ({ menuHover }) => {
               <img src={MobileLogoWhite} alt="erere" />
             )}
           </div>
-
-          {(!collapsed || menuHover) && (
-            <div>
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-                qwerty
-              </h1>
-            </div>
-          )}
         </div>
       </Link>
 
