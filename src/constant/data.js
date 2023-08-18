@@ -38,7 +38,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Types",
-    icon: "heroicons-outline:document",
+    icon: "heroicons-outline:chevron-double-right",
     link: "#",
     isHide: true,
     child: [
@@ -54,7 +54,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Brands",
-    icon: "heroicons-outline:document",
+    icon: "heroicons-outline:chevron-double-right",
     link: "#",
     isHide: true,
     child: [
@@ -70,7 +70,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Connectors",
-    icon: "heroicons-outline:document",
+    icon: "heroicons-outline:chevron-double-right",
     link: "#",
     isHide: true,
     child: [
@@ -86,7 +86,7 @@ export const menuItems = [
   },
   {
     title: "Vehicles",
-    icon: "heroicons-outline:document",
+    icon: "heroicons-outline:chevron-double-right",
     link: "#",
     isHide: true,
     child: [
@@ -106,7 +106,7 @@ export const menuItems = [
   },
   {
     title: "Stations",
-    icon: "heroicons-outline:lock-closed",
+    icon: "heroicons-outline:building-office-2",
     link: "#",
     child: [
       {
