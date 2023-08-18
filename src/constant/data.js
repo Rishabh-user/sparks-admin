@@ -33,365 +33,175 @@ export const menuItems = [
     ],
   },
   {
-    title: "changelog",
-    icon: "heroicons:arrow-trending-up",
-    link: "changelog",
-    isHide: false,
-    badge: "1.0.0",
-  },
-  {
     isHeadr: true,
-    title: "apps",
-  },
-
-  {
-    title: "Chat",
-    isHide: true,
-    icon: "heroicons-outline:chat",
-    link: "chat",
-  },
-
-  {
-    title: "Email",
-    isHide: true,
-    icon: "heroicons-outline:mail",
-    link: "email",
-  },
-
-  {
-    title: "Kanban",
-    isHide: true,
-    icon: "heroicons-outline:view-boards",
-    link: "kanban",
+    title: "Vehicle Masters",
   },
   {
-    title: "Calender",
-    isHide: true,
-    icon: "heroicons-outline:calendar",
-    link: "calender",
-  },
-
-  {
-    title: "Todo",
-    isHide: true,
-    icon: "heroicons-outline:clipboard-check",
-    link: "todo",
-  },
-
-  {
-    title: "Projects",
+    title: "Vehicle Types",
     icon: "heroicons-outline:document",
     link: "#",
     isHide: true,
     child: [
       {
-        childtitle: "Projects",
-        childlink: "projects",
+        childtitle: "Add Vehicle Type",
+        childlink: "Add Vehicle Type",
       },
       {
-        childtitle: "Project Details",
-        childlink: "project-details",
+        childtitle: "View All Vehicle Types",
+        childlink: "View All Vehicle Types",
       },
     ],
+  },
+  {
+    title: "Vehicle Brands",
+    icon: "heroicons-outline:document",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Add Brands",
+        childlink: "Add Brands",
+      },
+      {
+        childtitle: "View All Brands",
+        childlink: "View All Brands",
+      },
+    ],
+  },
+  {
+    title: "Vehicle Connectors",
+    icon: "heroicons-outline:document",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Add Connector",
+        childlink: "Add Connector",
+      },
+      {
+        childtitle: "View All Connectors",
+        childlink: "View All Connectors",
+      },
+    ],
+  },
+  {
+    title: "Vehicles",
+    icon: "heroicons-outline:document",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Add Vehicle",
+        childlink: "Add Vehicle",
+      },
+      {
+        childtitle: "View All Vehicles",
+        childlink: "View All Vehicles",
+      },
+    ],
+  },
+  {
+    isHeadr: true,
+    title: "Station Masters",
+  },
+  {
+    title: "Stations",
+    icon: "heroicons-outline:lock-closed",
+    link: "#",
+    child: [
+      {
+        childtitle: "Add Station",
+        childlink: "/",
+      },
+
+      {
+        childtitle: "View All Stations",
+        childlink: "/",
+      },
+    ],
+  },
+  {
+    isHeadr: true,
+    title: "User Masters",
+  },
+  {
+    title: "Users",
+    icon: "heroicons-outline:user-group",
+    link: "#",
+    child: [
+      {
+        childtitle: "Add User",
+        childlink: "/",
+      },
+
+      {
+        childtitle: "View All Users",
+        childlink: "/",
+      },
+    ],
+  },
+  {
+    isHeadr: true,
+    title: "Notification Masters",
+  },
+  {
+    title: "Notification",
+    icon: "heroicons-outline:bell",
+    link: "#",
+    child: [
+      {
+        childtitle: "Create Notification",
+        childlink: "/",
+      },
+
+      {
+        childtitle: "View All Notifications",
+        childlink: "/",
+      },
+    ],
+  },
+  {
+    isHeadr: true,
+    title: "Setting",
+  },
+  {
+    title: "Manage Admin",
+    icon: "heroicons-outline:cog",
+    link: "#",
+  },
+  {
+    isHeadr: true,
+    title: "Support Tickets",
+  },
+  {
+    title: "Support",
+    icon: "heroicons-outline:chat-bubble-left-right",
+    link: "#",
+    badge: "15",
   },
   {
     isHeadr: true,
     title: "Pages",
   },
   {
-    title: "Authentication",
+    title: "About us",
+    icon: "heroicons-outline:document-text",
+    link: "about-us",
+  },
+  {
+    title: "FAQ",
+    icon: "heroicons-outline:question-mark-circle",
+    link: "/",
+  },
+  {
+    title: "Term & Conditions",
+    icon: "heroicons-outline:information-circle",
+    link: "/",
+  },
+  {
+    title: "Privacy Policy",
     icon: "heroicons-outline:lock-closed",
-    link: "#",
-    child: [
-      {
-        childtitle: "Signin One",
-        childlink: "/",
-      },
-      
-      {
-        childtitle: "Signup One",
-        childlink: "/reg",
-      },
-      {
-        childtitle: "Forget Password One",
-        childlink: "/forgot-password",
-      }
-    ],
-  },
-  {
-    title: "Utility",
-    icon: "heroicons-outline:view-boards",
-    link: "#",
-    isHide: false,
-    child: [
-      {
-        childtitle: "Invoice",
-        childlink: "invoice",
-      },
-      {
-        childtitle: "Pricing",
-        childlink: "pricing",
-      },
-      // {
-      //   childtitle: "Testimonial",
-      //   childlink: "testimonial",
-      // },
-      {
-        childtitle: "FAQ",
-        childlink: "faq",
-      },
-      {
-        childtitle: "Blog",
-        childlink: "blog",
-      },
-      {
-        childtitle: "Blank page",
-        childlink: "blank-page",
-      },
-      {
-        childtitle: "Prfoile",
-        childlink: "profile",
-      },
-      {
-        childtitle: "Settings",
-        childlink: "settings",
-      },
-      {
-        childtitle: "404 page",
-        childlink: "/404",
-      },
-
-      {
-        childtitle: "Coming Soon",
-        childlink: "/coming-soon",
-      },
-      {
-        childtitle: "Under Maintanance page",
-        childlink: "/under-construction",
-      },
-    ],
-  },
-  {
-    isHeadr: true,
-    title: "Elements",
-  },
-  {
-    title: "Widgets",
-    icon: "heroicons-outline:view-grid-add",
-    link: "#",
-    child: [
-      {
-        childtitle: "Basic",
-        childlink: "basic",
-      },
-      {
-        childtitle: "Statistic",
-        childlink: "statistic",
-      },
-    ],
-  },
-  {
-    title: "Components",
-    icon: "heroicons-outline:collection",
-    link: "#",
-    child: [
-      {
-        childtitle: "Typography",
-        childlink: "typography",
-      },
-      {
-        childtitle: "Colors",
-        childlink: "colors",
-      },
-      {
-        childtitle: "Alert",
-        childlink: "alert",
-      },
-      {
-        childtitle: "Button",
-        childlink: "button",
-      },
-      {
-        childtitle: "Card",
-        childlink: "card",
-      },
-      {
-        childtitle: "Carousel",
-        childlink: "carousel",
-      },
-      {
-        childtitle: "Dropdown",
-        childlink: "dropdown",
-      },
-      {
-        childtitle: "Image",
-        childlink: "image",
-      },
-      {
-        childtitle: "Modal",
-        childlink: "modal",
-      },
-      {
-        childtitle: "Progress bar",
-        childlink: "progress-bar",
-      },
-      {
-        childtitle: "Placeholder",
-        childlink: "placeholder",
-      },
-      {
-        childtitle: "Tab & Accordion",
-        childlink: "tab-accordion",
-      },
-      {
-        childtitle: "Badges",
-        childlink: "badges",
-      },
-      {
-        childtitle: "Paginatins",
-        childlink: "paginations",
-      },
-      {
-        childtitle: "Video",
-        childlink: "video",
-      },
-      {
-        childtitle: "Tooltip & Popover",
-        childlink: "tooltip-popover",
-      },
-    ],
-  },
-  {
-    title: "Forms",
-    icon: "heroicons-outline:clipboard-list",
-    link: "#",
-    child: [
-      {
-        childtitle: "Input",
-        childlink: "input",
-      },
-      {
-        childtitle: "Input group",
-        childlink: "input-group",
-      },
-      {
-        childtitle: "Input layout",
-        childlink: "input-layout",
-      },
-      {
-        childtitle: "Form validation",
-        childlink: "form-validation",
-      },
-      {
-        childtitle: "Wizard",
-        childlink: "form-wizard",
-      },
-      {
-        childtitle: "Input mask",
-        childlink: "input-mask",
-      },
-      {
-        childtitle: "File input",
-        childlink: "file-input",
-      },
-      {
-        childtitle: "Form repeater",
-        childlink: "form-repeater",
-      },
-      {
-        childtitle: "Textarea",
-        childlink: "textarea",
-      },
-      {
-        childtitle: "Checkbox",
-        childlink: "checkbox",
-      },
-      {
-        childtitle: "Radio button",
-        childlink: "radio-button",
-      },
-      {
-        childtitle: "Switch",
-        childlink: "switch",
-      },
-      {
-        childtitle: "Select & Vue select",
-        childlink: "select",
-      },
-      {
-        childtitle: "Date time picker",
-        childlink: "date-time-picker",
-      },
-    ],
-  },
-  {
-    title: "Table",
-    icon: "heroicons-outline:table",
-    link: "#",
-    child: [
-      {
-        childtitle: "Basic Table",
-        childlink: "table-basic",
-      },
-      {
-        childtitle: "React Table",
-        childlink: "react-table",
-      },
-    ],
-  },
-  {
-    title: "Chart",
-    icon: "heroicons-outline:chart-bar",
-    link: "#",
-    child: [
-      {
-        childtitle: "Apex chart",
-        childlink: "appex-chart",
-      },
-      {
-        childtitle: "Chart js",
-        childlink: "chartjs",
-      },
-      {
-        childtitle: "Recharts",
-        childlink: "recharts",
-      },
-    ],
-  },
-  {
-    title: "Map",
-    icon: "heroicons-outline:map",
-    link: "map",
-  },
-  {
-    title: "Icons",
-    icon: "heroicons-outline:emoji-happy",
-    link: "icons",
-  },
-  {
-    title: "Multi Level",
-    icon: "heroicons:share",
-    link: "#",
-    child: [
-      {
-        childtitle: "Level 1.1",
-        childlink: "icons",
-      },
-      {
-        childtitle: "Level 1.2",
-        childlink: "Level-1",
-        multi_menu: [
-          {
-            multiTitle: "Level 2.1",
-            multiLink: "Level-2",
-          },
-          {
-            multiTitle: "Level 2.2",
-            multiLink: "Level-2.3",
-          },
-        ],
-      },
-    ],
+    link: "/",
   },
 ];
 

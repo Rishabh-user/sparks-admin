@@ -16,6 +16,9 @@ const Error = lazy(() => import("./pages/404"));
 
 import Layout from "./layout/Layout";
 
+// Pages
+const About = lazy(() => import("./pages/components/about-us"));
+
 // components pages
 const Button = lazy(() => import("./pages/components/button"));
 const Dropdown = lazy(() => import("./pages/components/dropdown"));
@@ -197,6 +200,8 @@ function App() {
           <Route path="notifications" element={<NotificationPage />} />
           <Route path="changelog" element={<ChangelogPage />} />
           <Route path="*" element={<Navigate to="/404" />} />
+          {/* Pages */}
+          <Route path="about-us" element={<About />} />
         </Route>
         <Route
           path="/404"
