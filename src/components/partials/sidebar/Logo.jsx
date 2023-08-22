@@ -8,6 +8,7 @@ import useSkin from "@/hooks/useSkin";
 
 // import images
 import MobileLogo from "@/assets/images/logo/logo.svg";
+import Favicon from "@/assets/images/logo/favicon.png";
 import MobileLogoWhite from "@/assets/images/logo/logo-c-white.svg";
 
 const SidebarLogo = ({ menuHover }) => {
@@ -31,18 +32,27 @@ const SidebarLogo = ({ menuHover }) => {
     >
       <Link to="/dashboard">
         <div className="flex items-center space-x-4">
+          {(!collapsed || menuHover) && (
           <div className="logo-icon">
-          {/* <img src={MobileLogo} alt="Spakrs Logo" width={170}  /> */}
-            {!isDark && !isSemiDark ? (
+            <div>
+              {!isDark && !isSemiDark ? (
               <img src={MobileLogo} alt="Spakrs Logo" width={170}  />
             ) : (
-              <img src={MobileLogoWhite} alt="erere" />
+              <img src={MobileLogoWhite} alt="Spakrs Logo" />
             )}
+            </div>
           </div>
+          )}
+
+          {(collapsed) && (
+            <div className="hide-on-hover">
+              <img src={Favicon} alt="Spakrs Logo" width={50}  />
+            </div>
+          )}
         </div>
       </Link>
 
-      {(!collapsed ) && (
+      {(!collapsed || menuHover ) && (
         <div
           onClick={() => setMenuCollapsed(!collapsed)}
           className={`h-4 w-4 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
