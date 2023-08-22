@@ -16,8 +16,7 @@ import customer1 from "@/assets/images/all-img/customer_1.png";
 export const advancedTable = [
     {
         id: 1,
-        brandname: "Tata",
-        vehicletype: "2 Wheeler, 3 Wheeler",
+        vehicletype: "2 Wheeler",
         date: "3/26/2022",
         status: "active",
         image: customer1,
@@ -25,7 +24,6 @@ export const advancedTable = [
     },
     {
         id: 2,
-        brandname: "MG",
         vehicletype: "3 Wheeler",
         date: "3/26/2022",
         status: "inactive",
@@ -34,7 +32,6 @@ export const advancedTable = [
     },
     {
         id: 3,
-        brandname: "KIA",
         vehicletype: "4 Wheeler",
         date: "3/26/2022",
         status: "active",
@@ -50,13 +47,6 @@ const COLUMNS = [
       return <span>{row?.cell?.value}</span>;
     },
   },  
-  {
-    Header: "Brand Name",
-    accessor: "brandname",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
-  }, 
   {
     Header: "Vehicle Type",
     accessor: "vehicletype",
@@ -153,7 +143,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-const AllBrands = ({ title = "View All Vehicle Brands" }) => { 
+const ViewAllConnector = ({ title = "View All Coonector" }) => { 
    const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => advancedTable, []);
 
@@ -363,4 +353,4 @@ const AllBrands = ({ title = "View All Vehicle Brands" }) => {
   );
 };
 
-export default AllBrands;
+export default ViewAllConnector;

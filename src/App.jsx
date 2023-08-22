@@ -4,10 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // home pages  & dashboard
 //import Dashboard from "./pages/dashboard";
 const Dashboard = lazy(() => import("./pages/dashboard"));
-const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
-const CrmPage = lazy(() => import("./pages/dashboard/crm"));
-const ProjectPage = lazy(() => import("./pages/dashboard/project"));
-const BankingPage = lazy(() => import("./pages/dashboard/banking"));
+
 
 const Login = lazy(() => import("./pages/auth/login"));
 const Register = lazy(() => import("./pages/auth/register"));
@@ -21,7 +18,14 @@ const About = lazy(() => import("./pages/components/about-us"));
 const Faq = lazy(() => import("./pages/components/faq"));
 const PrivacyPolicy = lazy(() => import("./pages/components/privacy-policy"));
 const TermsConditions = lazy(() => import("./pages/components/term-condition"));
-const AddVehicle = lazy(() => import("./pages/vehicle-masters/vehicle-types/add-vehicle"))
+const AddVehicleType = lazy(() => import("./pages/vehicle-masters/vehicle-types/add-vehicle"));
+const AllVehicleType = lazy(() => import("./pages/vehicle-masters/vehicle-types/all-vehicle-type"));
+const AllBrands = lazy(() => import("./pages/vehicle-masters/vehicle-brands/all-brands"));
+const AddBrand = lazy(() => import("./pages/vehicle-masters/vehicle-brands/add-brand"));
+const AddConnector = lazy(() => import("./pages/vehicle-masters/vehicle-connector/add-connector"));
+const ViewAllConnector = lazy(() => import("./pages/vehicle-masters/vehicle-connector/view-all-connector"));
+const AddVehicle = lazy(() => import("./pages/vehicle-masters/vehicles/add-vehicle"));
+const ViewAllVehicles = lazy(() => import("./pages/vehicle-masters/vehicles/view-all-vehicles"));
 
 // components pages
 const Button = lazy(() => import("./pages/components/button"));
@@ -84,7 +88,7 @@ const UnderConstructionPage = lazy(() =>
 );
 const BlogPage = lazy(() => import("./pages/utility/blog"));
 const BlogDetailsPage = lazy(() => import("./pages/utility/blog/blog-details"));
-//const FaqPage = lazy(() => import("./pages/utility/faq"));
+// const FaqPage = lazy(() => import("./pages/utility/faq"));
 // const Settings = lazy(() => import("./pages/utility/settings"));
 const Profile = lazy(() => import("./pages/utility/profile"));
 const IconPage = lazy(() => import("./pages/icons"));
@@ -138,10 +142,7 @@ function App() {
         />
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="ecommerce" element={<Ecommerce />} />
-          <Route path="crm" element={<CrmPage />} />
-          <Route path="project" element={<ProjectPage />} />
-          <Route path="banking" element={<BankingPage />} />
+          
           {/* App pages */}
           <Route path="todo" element={<TodoPage />} />
           <Route path="email" element={<EmailPage />} />
@@ -210,7 +211,14 @@ function App() {
           <Route path="faq" element={<Faq />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms-conditions" element={<TermsConditions />} />
+          <Route path="add-vehicle-type" element={<AddVehicleType />} />  
+          <Route path="all-vehicle-type" element={<AllVehicleType />} />
+          <Route path="view-all-brands" element={<AllBrands />} />
+          <Route path="add-brand" element={<AddBrand />} />
+          <Route path="add-connector" element={<AddConnector />} />
+          <Route path="all-connector" element={<ViewAllConnector />} />
           <Route path="add-vehicle" element={<AddVehicle />} />
+          <Route path="view-all-vehicles" element={<ViewAllVehicles />} />
         </Route>
         <Route
           path="/404"
