@@ -5,7 +5,7 @@ import DropZone from "../../forms/file-input/DropZone";
 import Button from "@/components/ui/Button";
 import Select, { components } from "react-select";
 
-const AddBrand = () => { 
+const AddVehicle = () => { 
     const vehicletype = [
         { value: "2 Wheeler", label: "2 Wheeler" },
         { value: "3 Wheeler", label: "3 Wheeler" },
@@ -14,11 +14,11 @@ const AddBrand = () => {
     
   return (
     <div>
-      <Card title="Add New Brand">
+      <Card title="Add New Vehicle">
         <div className="space-y-4">
           <Textinput
-            label="Brand name"
-            id="b_name"
+            label="Vehicle name"
+            id="v_name"
             type="text"
             placeholder=""
           />
@@ -50,4 +50,4 @@ const AddBrand = () => {
   );
 };
 
-export default AddBrand;
+export default AddVehicle;

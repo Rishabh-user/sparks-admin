@@ -7,10 +7,10 @@ import {
   useTable,
   useRowSelect,
   useSortBy,
-  useGlobalFilter,
+  //useGlobalFilter,
   usePagination,
 } from "react-table";
-import GlobalFilter from "./GlobalFilter";
+//import GlobalFilter from "./GlobalFilter";
 
 const COLUMNS = [
   {
@@ -166,7 +166,7 @@ const ExampleTwo = ({ title = "Advanced Table Two" }) => {
       data,
     },
 
-    useGlobalFilter,
+    //useGlobalFilter,
     useSortBy,
     usePagination,
     useRowSelect,
@@ -205,19 +205,22 @@ const ExampleTwo = ({ title = "Advanced Table Two" }) => {
     gotoPage,
     pageCount,
     setPageSize,
-    setGlobalFilter,
+    //setGlobalFilter,
     prepareRow,
   } = tableInstance;
 
-  const { globalFilter, pageIndex, pageSize } = state;
+  const { 
+    //globalFilter, 
+    pageIndex, 
+    pageSize } = state;
   return (
     <>
       <Card>
         <div className="md:flex justify-between items-center mb-6">
           <h4 className="card-title">{title}</h4>
-          <div>
+          {/* <div>
             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-          </div>
+          </div> */}
         </div>
         <div className="overflow-x-auto mx-6">
           <div className="inline-block min-w-full align-middle">

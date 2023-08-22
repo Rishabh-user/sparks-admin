@@ -1,44 +1,33 @@
 import React from "react";
-//import ReactTable from "react-table";  
-//import "react-table/react-table.css";
+import Card from "@/components/ui/Card";
+import Textinput from "@/components/ui/Textinput";
+import DropZone from "../../forms/file-input/DropZone";
+import Button from "@/components/ui/Button";
 
-const AddVehicle = () => {    
-    // const data = [{  
-    //     name: 'Ayaan',  
-    //     age: 26  
-    //     },{  
-    //      name: 'Ahana',  
-    //      age: 22  
-    //      },{  
-    //      name: 'Peter',  
-    //      age: 40      
-    //      },{  
-    //      name: 'Virat',  
-    //      age: 30  
-    //      },{  
-    //      name: 'Rohit',  
-    //      age: 32  
-    //      },{  
-    //      name: 'Dhoni',  
-    //      age: 37  
-    //      }]  
-    //  const columns = [{  
-    //    Header: 'Name',  
-    //    accessor: 'name'  
-    //    },{  
-    //    Header: 'Age',  
-    //    accessor: 'age'  
-    //    }]  
+
+const AddVehicleType = () => { 
+ 
   return (
     <div>
-        {/* <ReactTable  
-            data={data}  
-            columns={columns}  
-            defaultPageSize = {2}  
-            pageSizeOptions = {[2,4, 6]}  
-        />   */}
+      <Card title="Add New Vehicle Type">
+        <div className="space-y-4">
+          <Textinput
+            label="Vehicle name"
+            id="v_name"
+            type="text"
+            placeholder=""
+          />
+          <div className="xl:col-span-2 col-span-1">
+            <label className="form-label">Upload Vehicle Icon</label>
+            <DropZone />
+          </div>          
+          <div className="space-y-4 text-end">           
+            <Button text="Add" className="btn-dark" />
+          </div>
+        </div>
+      </Card>
     </div>
   );
 };
 
-export default AddVehicle;
+export default AddVehicleType;

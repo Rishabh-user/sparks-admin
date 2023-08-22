@@ -7,30 +7,7 @@ export const menuItems = [
   {
     title: "Dashboard",
     icon: "heroicons-outline:home",
-    isOpen: true,
-    isHide: true,
-    child: [
-      {
-        childtitle: "Analytics Dashboard",
-        childlink: "dashboard",
-      },
-      {
-        childtitle: "Ecommerce Dashboard",
-        childlink: "ecommerce",
-      },
-      {
-        childtitle: "Project  Dashbaord",
-        childlink: "project",
-      },
-      {
-        childtitle: " CRM Dashbaord",
-        childlink: "crm",
-      },
-      {
-        childtitle: "Banking Dashboard",
-        childlink: "banking",
-      },
-    ],
+    link: "dashboard"    
   },
   {
     isHeadr: true,
@@ -38,17 +15,22 @@ export const menuItems = [
   },
   {
     title: "Vehicle Types",
+<<<<<<< HEAD
     icon: "carbon:types",
     link: "#",
+=======
+    icon: "heroicons-outline:chevron-double-right",
+    link: "/",
+>>>>>>> dfebb0eb7c7152b3117401eb84c2251973523768
     isHide: true,
     child: [
       {
         childtitle: "Add Vehicle Type",
-        childlink: "/add-vehicle",
+        childlink: "/add-vehicle-type",
       },
       {
         childtitle: "View All Vehicle Types",
-        childlink: "View All Vehicle Types",
+        childlink: "/all-vehicle-type",
       },
     ],
   },
@@ -60,11 +42,11 @@ export const menuItems = [
     child: [
       {
         childtitle: "Add Brands",
-        childlink: "Add Brands",
+        childlink: "/add-brand",
       },
       {
         childtitle: "View All Brands",
-        childlink: "View All Brands",
+        childlink: "/view-all-brands",
       },
     ],
   },
@@ -76,11 +58,11 @@ export const menuItems = [
     child: [
       {
         childtitle: "Add Connector",
-        childlink: "Add Connector",
+        childlink: "/add-connector",
       },
       {
         childtitle: "View All Connectors",
-        childlink: "View All Connectors",
+        childlink: "/all-connector",
       },
     ],
   },
@@ -92,11 +74,11 @@ export const menuItems = [
     child: [
       {
         childtitle: "Add Vehicle",
-        childlink: "Add Vehicle",
+        childlink: "/add-vehicle",
       },
       {
         childtitle: "View All Vehicles",
-        childlink: "View All Vehicles",
+        childlink: "/view-all-vehicles",
       },
     ],
   },
@@ -191,17 +173,21 @@ export const menuItems = [
   {
     title: "FAQ",
     icon: "heroicons-outline:question-mark-circle",
-    link: "/faq",
+    link: "faq",
   },
   {
     title: "Term & Conditions",
     icon: "heroicons-outline:information-circle",
-    link: "/terms-conditions",
+    link: "terms-conditions",
   },
   {
     title: "Privacy Policy",
     icon: "heroicons-outline:lock-closed",
+<<<<<<< HEAD
     link: "/privacy-policy",
+=======
+    link: "privacy-policy"
+>>>>>>> dfebb0eb7c7152b3117401eb84c2251973523768
   },
 ];
 
@@ -215,27 +201,7 @@ export const topMenu = [
         childtitle: "Analytics Dashboard",
         childlink: "dashboard",
         childicon: "heroicons:presentation-chart-line",
-      },
-      {
-        childtitle: "Ecommerce Dashboard",
-        childlink: "ecommerce",
-        childicon: "heroicons:shopping-cart",
-      },
-      {
-        childtitle: "Project  Dashboard",
-        childlink: "project",
-        childicon: "heroicons:briefcase",
-      },
-      {
-        childtitle: "CRM Dashboard",
-        childlink: "crm",
-        childicon: "ri:customer-service-2-fill",
-      },
-      {
-        childtitle: "Banking Dashboard",
-        childlink: "banking",
-        childicon: "heroicons:wrench-screwdriver",
-      },
+      },      
     ],
   },
   {
