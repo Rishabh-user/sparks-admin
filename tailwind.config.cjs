@@ -124,6 +124,8 @@ module.exports = {
           900: "#0F172A",
         },
         sparks: {
+          100: "#ffffff",
+          500: "#b7ccf9",
           900: "#0d55ea",
         },
       },

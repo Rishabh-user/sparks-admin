@@ -38,7 +38,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Types",
-    icon: "heroicons-outline:chevron-double-right",
+    icon: "carbon:types",
     link: "#",
     isHide: true,
     child: [
@@ -54,7 +54,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Brands",
-    icon: "heroicons-outline:chevron-double-right",
+    icon: "material-symbols:electric-car-outline-rounded",
     link: "#",
     isHide: true,
     child: [
@@ -70,7 +70,7 @@ export const menuItems = [
   },
   {
     title: "Vehicle Connectors",
-    icon: "heroicons-outline:chevron-double-right",
+    icon: "fluent:connector-24-regular",
     link: "#",
     isHide: true,
     child: [
@@ -86,7 +86,7 @@ export const menuItems = [
   },
   {
     title: "Vehicles",
-    icon: "heroicons-outline:chevron-double-right",
+    icon: "la:car-alt",
     link: "#",
     isHide: true,
     child: [
@@ -201,7 +201,7 @@ export const menuItems = [
   {
     title: "Privacy Policy",
     icon: "heroicons-outline:lock-closed",
-    link: "/privacy-policy"
+    link: "/privacy-policy",
   },
 ];
 

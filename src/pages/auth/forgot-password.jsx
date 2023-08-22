@@ -3,32 +3,31 @@ import { Link } from "react-router-dom";
 import ForgotPass from "./common/forgot-pass";
 import useDarkMode from "@/hooks/useDarkMode";
 
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
-import Logo from "@/assets/images/logo/logo.svg";
-import Illustration from "@/assets/images/auth/ils1.svg";
+import Logo from "@/assets/images/logo/logo.png";
+import Illustration from "@/assets/images/auth/splash.png";
 const forgotPass = () => {
   const [isDark] = useDarkMode();
   return (
     <div className="loginwrapper">
       <div className="lg-inner-column">
         <div className="left-column relative z-[1]">
-          <div className="max-w-[520px] pt-20 ltr:pl-20 rtl:pr-20">
+          <div className="absolute max-w-[520px] pt-10 ltr:pl-20 rtl:pr-20">
             <Link to="/">
-              <img src={isDark ? LogoWhite : Logo} alt="" className="mb-10" />
+              <img src={Logo} alt="" className="mb-10" width={200} />
             </Link>
 
-            <h4>
+            {/* <h4>
               Unlock your Project
               <span className="text-slate-800 dark:text-slate-400 font-bold">
                 performance
               </span>
-            </h4>
+            </h4> */}
           </div>
-          <div className="absolute left-0 bottom-[-130px] h-full w-full z-[-1]">
+          <div className="absolute left-0 h-full w-full z-[-1]">
             <img
               src={Illustration}
               alt=""
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
@@ -67,7 +66,7 @@ const forgotPass = () => {
               </div>
             </div>
             <div className="auth-footer text-center">
-              Copyright 2021, Dashcode All Rights Reserved.
+              Copyright 2023, Sparks All Rights Reserved.
             </div>
           </div>
         </div>
