@@ -7,7 +7,7 @@ export const menuItems = [
   {
     title: "Dashboard",
     icon: "heroicons-outline:home",
-    link: "dashboard"    
+    link: "dashboard",
   },
   {
     isHeadr: true,
@@ -15,13 +15,8 @@ export const menuItems = [
   },
   {
     title: "Vehicle Types",
-<<<<<<< HEAD
     icon: "carbon:types",
-    link: "#",
-=======
-    icon: "heroicons-outline:chevron-double-right",
     link: "/",
->>>>>>> dfebb0eb7c7152b3117401eb84c2251973523768
     isHide: true,
     child: [
       {
@@ -183,11 +178,7 @@ export const menuItems = [
   {
     title: "Privacy Policy",
     icon: "heroicons-outline:lock-closed",
-<<<<<<< HEAD
-    link: "/privacy-policy",
-=======
-    link: "privacy-policy"
->>>>>>> dfebb0eb7c7152b3117401eb84c2251973523768
+    link: "privacy-policy",
   },
 ];
 
@@ -201,7 +192,7 @@ export const topMenu = [
         childtitle: "Analytics Dashboard",
         childlink: "dashboard",
         childicon: "heroicons:presentation-chart-line",
-      },      
+      },
     ],
   },
   {
