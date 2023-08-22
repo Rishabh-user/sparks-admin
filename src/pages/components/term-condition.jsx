@@ -8,7 +8,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import DropZone from "../forms/file-input/DropZone";
 import Button from "@/components/ui/Button";
 
-const about_us = () => {
+const TermsConditions = () => {
       const [value, setValue] = useState("");
     
       const handleFormatter = (e) => {
@@ -18,7 +18,7 @@ const about_us = () => {
 
   return (
     <div>
-      <Card title="About Us">
+      <Card title="Terms & Conditions">
         <div className="space-y-5">
         <Textinput
             label="Title"
@@ -52,4 +52,4 @@ const about_us = () => {
   );
 };
 
-export default about_us;
+export default TermsConditions;

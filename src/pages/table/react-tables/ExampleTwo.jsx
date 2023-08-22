@@ -219,7 +219,7 @@ const ExampleTwo = ({ title = "Advanced Table Two" }) => {
             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           </div>
         </div>
-        <div className="overflow-x-auto -mx-6">
+        <div className="overflow-x-auto mx-6">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden ">
               <table

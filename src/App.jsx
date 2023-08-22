@@ -18,6 +18,10 @@ import Layout from "./layout/Layout";
 
 // Pages
 const About = lazy(() => import("./pages/components/about-us"));
+const Faq = lazy(() => import("./pages/components/faq"));
+const PrivacyPolicy = lazy(() => import("./pages/components/privacy-policy"));
+const TermsConditions = lazy(() => import("./pages/components/term-condition"));
+const AddVehicle = lazy(() => import("./pages/vehicle-masters/vehicle-types/add-vehicle"))
 
 // components pages
 const Button = lazy(() => import("./pages/components/button"));
@@ -80,7 +84,7 @@ const UnderConstructionPage = lazy(() =>
 );
 const BlogPage = lazy(() => import("./pages/utility/blog"));
 const BlogDetailsPage = lazy(() => import("./pages/utility/blog/blog-details"));
-const FaqPage = lazy(() => import("./pages/utility/faq"));
+//const FaqPage = lazy(() => import("./pages/utility/faq"));
 // const Settings = lazy(() => import("./pages/utility/settings"));
 const Profile = lazy(() => import("./pages/utility/profile"));
 const IconPage = lazy(() => import("./pages/icons"));
@@ -102,6 +106,7 @@ const ProjectDetailsPage = lazy(() =>
 const KanbanPage = lazy(() => import("./pages/app/kanban"));
 const CalenderPage = lazy(() => import("./pages/app/calender"));
 import Loading from "@/components/Loading";
+
 function App() {
   return (
     <main className="App  relative">
@@ -191,7 +196,7 @@ function App() {
           <Route path="blank-page" element={<BlankPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog-details" element={<BlogDetailsPage />} />
-          <Route path="faq" element={<FaqPage />} />
+          {/* <Route path="faq" element={<FaqPage />} /> */}
           {/* <Route path="settings" element={<Settings />} /> */}
           <Route path="profile" element={<Profile />} />
           <Route path="basic" element={<BasicWidget />} />
@@ -202,6 +207,10 @@ function App() {
           <Route path="*" element={<Navigate to="/404" />} />
           {/* Pages */}
           <Route path="about-us" element={<About />} />
+          <Route path="faq" element={<Faq />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="terms-conditions" element={<TermsConditions />} />
+          <Route path="add-vehicle" element={<AddVehicle />} />
         </Route>
         <Route
           path="/404"

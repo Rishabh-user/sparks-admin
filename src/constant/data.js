@@ -44,7 +44,7 @@ export const menuItems = [
     child: [
       {
         childtitle: "Add Vehicle Type",
-        childlink: "Add Vehicle Type",
+        childlink: "/add-vehicle",
       },
       {
         childtitle: "View All Vehicle Types",
@@ -191,17 +191,17 @@ export const menuItems = [
   {
     title: "FAQ",
     icon: "heroicons-outline:question-mark-circle",
-    link: "/",
+    link: "/faq",
   },
   {
     title: "Term & Conditions",
     icon: "heroicons-outline:information-circle",
-    link: "/",
+    link: "/terms-conditions",
   },
   {
     title: "Privacy Policy",
     icon: "heroicons-outline:lock-closed",
-    link: "/",
+    link: "/privacy-policy"
   },
 ];
 
