@@ -15,29 +15,38 @@ import GlobalFilter from "../../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
 export const advancedTable = [
     {
-        id: 1,
-        vehicletype: "2 Wheeler",
-        date: "3/26/2022",
-        status: "active",
-        image: customer1,
-        action: null,
-    },
-    {
-        id: 2,
-        vehicletype: "3 Wheeler",
-        date: "3/26/2022",
-        status: "inactive",
-        image: customer1,
-        action: null,
-    },
-    {
-        id: 3,
+        id: 1,    
+        vehiclename: "Creta",
+        connectortype: "SAE J1772 CONNECTOR – TYPE 1",
+        vehiclebrand: "Hyndui",
         vehicletype: "4 Wheeler",
         date: "3/26/2022",
         status: "active",
         image: customer1,
         action: null,
     },
+    {
+      id: 2,    
+      vehiclename: "Verna",
+      connectortype: "SAE J1772 CONNECTOR – TYPE 1",
+      vehiclebrand: "Hyndui",
+      vehicletype: "4 Wheeler",
+      date: "3/26/2022",
+      status: "active",
+      image: customer1,
+      action: null,
+  },
+  {
+    id: 3,    
+    vehiclename: "Venue",
+    connectortype: "SAE J1772 CONNECTOR – TYPE 1",
+    vehiclebrand: "Hyndui",
+    vehicletype: "4 Wheeler",
+    date: "3/26/2022",
+    status: "active",
+    image: customer1,
+    action: null,
+},
 ]
 const COLUMNS = [
   {
@@ -46,10 +55,31 @@ const COLUMNS = [
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
+  }, 
+  {
+    Header: "Vehicle Name",
+    accessor: "vehiclename",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
+  },   
+  {
+    Header: "Vehicle Brand",
+    accessor: "vehiclebrand",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
   },  
   {
     Header: "Vehicle Type",
     accessor: "vehicletype",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
+  },
+  {
+    Header: "Connector Type",
+    accessor: "connectortype",
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
@@ -121,30 +151,8 @@ const COLUMNS = [
   },
 ];
 
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
-
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
-
-    return (
-      <>
-        <input
-          type="checkbox"
-          ref={resolvedRef}
-          {...rest}
-          className="table-checkbox"
-        />
-      </>
-    );
-  }
-);
-
 const ViewAllVehicles = ({ title = "View All vehicles" }) => { 
-   const columns = useMemo(() => COLUMNS, []);
+  const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => advancedTable, []);
 
   const tableInstance = useTable(
@@ -158,24 +166,6 @@ const ViewAllVehicles = ({ title = "View All vehicles" }) => {
     usePagination,
     useRowSelect,
 
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "selection",
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    }
   );
   const {
     getTableProps,

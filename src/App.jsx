@@ -18,7 +18,7 @@ const About = lazy(() => import("./pages/components/about-us"));
 const Faq = lazy(() => import("./pages/components/faq"));
 const PrivacyPolicy = lazy(() => import("./pages/components/privacy-policy"));
 const TermsConditions = lazy(() => import("./pages/components/term-condition"));
-const AddVehicleType = lazy(() => import("./pages/vehicle-masters/vehicle-types/add-vehicle"));
+const AddVehicleType = lazy (() => import("./pages/vehicle-masters/vehicle-types/add-vehicle-type"));
 const AllVehicleType = lazy(() => import("./pages/vehicle-masters/vehicle-types/all-vehicle-type"));
 const AllBrands = lazy(() => import("./pages/vehicle-masters/vehicle-brands/all-brands"));
 const AddBrand = lazy(() => import("./pages/vehicle-masters/vehicle-brands/add-brand"));
@@ -26,6 +26,11 @@ const AddConnector = lazy(() => import("./pages/vehicle-masters/vehicle-connecto
 const ViewAllConnector = lazy(() => import("./pages/vehicle-masters/vehicle-connector/view-all-connector"));
 const AddVehicle = lazy(() => import("./pages/vehicle-masters/vehicles/add-vehicle"));
 const ViewAllVehicles = lazy(() => import("./pages/vehicle-masters/vehicles/view-all-vehicles"));
+const AddStation = lazy(() => import("./pages/station-masters/add-station"));
+const ViewAllStations = lazy(() => import("./pages/station-masters/view-all-stations"));
+const ViewAllUsers = lazy(() => import("./pages/users-masters/view-all-users"));
+const ViewUser = lazy(() => import("./pages/users-masters/view-user"));
+const Admin = lazy(() => import("./pages/auth/admin"))
 
 // components pages
 const Button = lazy(() => import("./pages/components/button"));
@@ -219,6 +224,11 @@ function App() {
           <Route path="all-connector" element={<ViewAllConnector />} />
           <Route path="add-vehicle" element={<AddVehicle />} />
           <Route path="view-all-vehicles" element={<ViewAllVehicles />} />
+          <Route path="add-station" element={<AddStation />} />
+          <Route path="view-all-stations" element={<ViewAllStations />} />
+          <Route path="view-all-users" element={<ViewAllUsers />} />
+          <Route path="view-user" element={<ViewUser />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
         <Route
           path="/404"

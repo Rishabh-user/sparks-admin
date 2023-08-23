@@ -6,6 +6,29 @@ import Button from "@/components/ui/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import { CKEditor } from 'ckeditor4-react';
 
+// Modal
+import Modal from "@/components/ui/Modal";
+
+// Accordion
+import Accordion from "@/components/ui/Accordion";
+const items = [
+  {
+    title: "How does Dashcode work?",
+    content:
+      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
+  },
+  {
+    title: "Where i can learn more about using Dashcode?",
+    content:
+      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
+  },
+  {
+    title: "Why Dashcode is so important?",
+    content:
+      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
+  },
+];
+
 const Faq = () => {
   const { register, control, handleSubmit, reset, trigger, setError } = useForm(
     {
@@ -24,51 +47,51 @@ const Faq = () => {
       <Card
         title="FAQ's"
         headerslot={
-          <Button
-            text="Add new"
-            icon="heroicons-outline:plus"
-            className="btn-dark"
-            onClick={() => append()}
-          />
+          <Modal
+            title="Add New FAQ's"
+            label="Add FAQ's"
+            labelClass="btn-dark btn-sm"
+            uncontrol
+            className="max-w-5xl"
+            centered
+            scrollContent
+            footerContent={
+              <Button
+                text="Accept"
+                className="btn-dark "
+                onClick={() => {
+                  alert("use Control Modal");
+                }}
+              />
+            }
+          >
+            <form onSubmit={handleSubmit((data) => console.log(data))}>
+              <div
+                  className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0"
+                >
+                <div className="flex justify-between items-end space-x-5">
+                  <div className="flex-1">
+                    <Textinput
+                      label="Title"
+                      type="text"
+                      id={`name${index}`}
+                      placeholder="Title"
+                      register={register}
+                      name={`test[${index}].title`}
+                    />
+                  </div>               
+                </div>
+                <CKEditor initData="<p>Faq Descriptions</p>" />
+              </div>
+            </form>
+          </Modal>
         }
       >
-        <form onSubmit={handleSubmit((data) => console.log(data))}>
-          {fields.map((item, index) => (
-            <div
-              className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-              key={index}
-            >
-              <div className="flex justify-between items-end space-x-5">
-                <div className="flex-1">
-                  <Textinput
-                    label="Title"
-                    type="text"
-                    id={`name${index}`}
-                    placeholder="Title"
-                    register={register}
-                    name={`test[${index}].title`}
-                  />
-                </div>
-                <div className="flex-none relative">
-                  <button
-                    onClick={() => remove(index)}
-                    type="button"
-                    className="inline-flex items-center justify-center h-10 w-10 bg-danger-500 text-lg border rounded border-danger-500 text-white"
-                  >
-                    <Icon icon="heroicons-outline:trash" />
-                  </button>
-                </div>                
-              </div>
-              <CKEditor initData="<p>Faq Descriptions</p>" />
-            </div>
-            
-          ))}
-
-          <div className="ltr:text-right rtl:text-left">
-            <Button text="Save" className="btn-dark" />
-          </div>
-        </form>
+        <div className="">
+          <Accordion items={items} />
+        </div>
       </Card>
+
     </div>
   );
 };

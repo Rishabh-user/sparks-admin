@@ -11,33 +11,34 @@ import {
 } from "react-table";
 
 //import GlobalFilter from "./GlobalFilter";
-import GlobalFilter from "../../table/react-tables/GlobalFilter";
+import GlobalFilter from "../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
 export const advancedTable = [
     {
-        id: 1,
-        vehicletype: "2 Wheeler",
+        id: 1,    
+        address: "Home# 320/N, Road# 71/B, Mohakhali, Dhaka-1207, Bangladesh",
+        connectortype: "SAE J1772 CONNECTOR – TYPE 1",
         date: "3/26/2022",
         status: "active",
-        image: customer1,
         action: null,
     },
     {
-        id: 2,
-        vehicletype: "3 Wheeler",
-        date: "3/26/2022",
-        status: "inactive",
-        image: customer1,
-        action: null,
-    },
-    {
-        id: 3,
-        vehicletype: "4 Wheeler",
-        date: "3/26/2022",
-        status: "active",
-        image: customer1,
-        action: null,
-    },
+      id: 2,    
+      address: "Home# 320/N, Road# 71/B, Mohakhali, Dhaka-1207, Bangladesh",
+      connectortype: "SAE J1772 CONNECTOR – TYPE 1",
+      date: "3/26/2022",
+      status: "active",
+      action: null,
+  },
+  {
+    id: 3,    
+    vehiclename: "Venue",
+    address: "Home# 320/N, Road# 71/B, Mohakhali, Dhaka-1207, Bangladesh",
+    connectortype: "SAE J1772 CONNECTOR – TYPE 1",
+    date: "3/26/2022",
+    status: "active",
+    action: null,
+},
 ]
 const COLUMNS = [
   {
@@ -46,10 +47,17 @@ const COLUMNS = [
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
-  },  
+  }, 
   {
-    Header: "Vehicle Type",
-    accessor: "vehicletype",
+    Header: "Address",
+    accessor: "address",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
+  },
+  {
+    Header: "Connector Type",
+    accessor: "connectortype",
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
@@ -121,10 +129,8 @@ const COLUMNS = [
   },
 ];
 
-
-
-const AllVehicleType = ({ title = "View All Vehicle Type" }) => { 
-   const columns = useMemo(() => COLUMNS, []);
+const ViewAllStations = ({ title = "View All Charging Stations" }) => { 
+  const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => advancedTable, []);
 
   const tableInstance = useTable(
@@ -137,21 +143,31 @@ const AllVehicleType = ({ title = "View All Vehicle Type" }) => {
     useSortBy,
     usePagination,
     useRowSelect,
+
   );
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     footerGroups,
-    page,   
-    state,   
+    page,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    state,
+    gotoPage,
+    pageCount,
+    setPageSize,
     setGlobalFilter,
     prepareRow,
   } = tableInstance;
 
   const { 
     globalFilter, 
-    } = state;
+    pageIndex, 
+    pageSize } = state;
   
   return (
     <div>
@@ -216,11 +232,93 @@ const AllVehicleType = ({ title = "View All Vehicle Type" }) => {
             </div>
           </div>
         </div>
-        
+        <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">
+          <div className=" flex items-center space-x-3 rtl:space-x-reverse">
+            <select
+              className="form-control py-2 w-max"
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+            >
+              {[10, 25, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+            <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+              Page{" "}
+              <span>
+                {pageIndex + 1} of {pageOptions.length}
+              </span>
+            </span>
+          </div>
+          <ul className="flex items-center  space-x-3  rtl:space-x-reverse">
+            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                className={` ${
+                  !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={() => gotoPage(0)}
+                disabled={!canPreviousPage}
+              >
+                <Icon icon="heroicons:chevron-double-left-solid" />
+              </button>
+            </li>
+            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                className={` ${
+                  !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                Prev
+              </button>
+            </li>
+            {pageOptions.map((page, pageIdx) => (
+              <li key={pageIdx}>
+                <button
+                  href="#"
+                  aria-current="page"
+                  className={` ${
+                    pageIdx === pageIndex
+                      ? "bg-sparks-900 dark:bg-slate-600  dark:text-slate-200 text-white font-medium "
+                      : "bg-slate-100 dark:bg-slate-700 dark:text-slate-400 text-slate-900  font-normal  "
+                  }    text-sm rounded leading-[16px] flex h-6 w-6 items-center justify-center transition-all duration-150`}
+                  onClick={() => gotoPage(pageIdx)}
+                >
+                  {page + 1}
+                </button>
+              </li>
+            ))}
+            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                className={` ${
+                  !canNextPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                Next
+              </button>
+            </li>
+            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}
+                className={` ${
+                  !canNextPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                <Icon icon="heroicons:chevron-double-right-solid" />
+              </button>
+            </li>
+          </ul>
+        </div>
         {/*end*/}
       </Card>
     </div>
   );
 };
 
-export default AllVehicleType;
+export default ViewAllStations;

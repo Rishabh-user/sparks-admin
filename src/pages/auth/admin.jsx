@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
+import Button from "@/components/ui/Button";
 import {
   useTable,
   useRowSelect,
@@ -10,34 +11,53 @@ import {
   usePagination,
 } from "react-table";
 
+// Modal
+import Modal from "@/components/ui/Modal";
+
 //import GlobalFilter from "./GlobalFilter";
-import GlobalFilter from "../../table/react-tables/GlobalFilter";
+import GlobalFilter from "../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
+import { Link } from "react-router-dom";
 export const advancedTable = [
     {
-        id: 1,
-        vehicletype: "2 Wheeler",
+        id: 1,    
+        users: {
+            name: "Saryu Sirohi",
+            image: customer1,
+          },
+        mobileno: "9876543210",
+        emailid: "saryu@targeticon",
         date: "3/26/2022",
         status: "active",
         image: customer1,
         action: null,
     },
     {
-        id: 2,
-        vehicletype: "3 Wheeler",
-        date: "3/26/2022",
-        status: "inactive",
+      id: 2,  
+      users: {
+        name: "Saryu Sirohi",
         image: customer1,
-        action: null,
-    },
-    {
-        id: 3,
-        vehicletype: "4 Wheeler",
+      },
+        mobileno: "9876543210",
+        emailid: "saryu@targeticon",
         date: "3/26/2022",
         status: "active",
         image: customer1,
-        action: null,
-    },
+        action: null, 
+  },
+  {
+    id: 3, 
+    users: {
+        name: "Saryu Sirohi",
+        image: customer1,
+      },
+    mobileno: "9876543210",
+    emailid: "saryu@targeticon",
+    date: "3/26/2022",
+    status: "active",
+    image: customer1,
+    action: null, 
+},
 ]
 const COLUMNS = [
   {
@@ -46,10 +66,39 @@ const COLUMNS = [
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
+  }, 
+  {
+    Header: "Users",
+    accessor: "users",
+    Cell: (row) => {
+      return (
+        <div>
+          <span className="inline-flex items-center">
+            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+              <img
+                src={row?.cell?.value.image}
+                alt=""
+                className="object-cover w-full h-full rounded-full"
+              />
+            </span>
+            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+              {row?.cell?.value.name}
+            </span>
+          </span>
+        </div>
+      );
+    },
+  }, 
+  {
+    Header: "Mobile Number",
+    accessor: "mobileno",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
   },  
   {
-    Header: "Vehicle Type",
-    accessor: "vehicletype",
+    Header: "Email Id",
+    accessor: "emailid",
     Cell: (row) => {
       return <span>{row?.cell?.value}</span>;
     },
@@ -95,9 +144,9 @@ const COLUMNS = [
       return (
         <div className="flex space-x-3 rtl:space-x-reverse">
           <Tooltip content="View" placement="top" arrow animation="shift-away">
-            <button className="action-btn" type="button">
+            <Link to="/view-user" className="action-btn" type="button">
               <Icon icon="heroicons:eye" />
-            </button>
+            </Link>
           </Tooltip>
           <Tooltip content="Edit" placement="top" arrow animation="shift-away">
             <button className="action-btn" type="button">
@@ -121,8 +170,8 @@ const COLUMNS = [
   },
 ];
 
-const ViewAllConnector = ({ title = "View All Coonector" }) => { 
-   const columns = useMemo(() => COLUMNS, []);
+const Admin = ({ title = "View All Admins" }) => { 
+  const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => advancedTable, []);
 
   const tableInstance = useTable(
@@ -167,7 +216,26 @@ const ViewAllConnector = ({ title = "View All Coonector" }) => {
         <div className="md:flex justify-between items-center mb-6">
           <h4 className="card-title">{title}</h4>
           <div>
-            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          <Modal
+            title="Add New Admin"
+            label="Add Admin"
+            labelClass="btn-dark btn-sm"
+            uncontrol
+            className="max-w-5xl"
+            centered
+            scrollContent
+            footerContent={
+              <Button
+                text="Accept"
+                className="btn-dark "
+                onClick={() => {
+                  alert("use Control Modal");
+                }}
+              />
+            }
+          >
+            dstrh
+          </Modal>
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -313,4 +381,4 @@ const ViewAllConnector = ({ title = "View All Coonector" }) => {
   );
 };
 
-export default ViewAllConnector;
+export default Admin;

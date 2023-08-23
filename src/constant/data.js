@@ -88,12 +88,12 @@ export const menuItems = [
     child: [
       {
         childtitle: "Add Station",
-        childlink: "/",
+        childlink: "/add-station",
       },
 
       {
         childtitle: "View All Stations",
-        childlink: "/",
+        childlink: "/view-all-stations",
       },
     ],
   },
@@ -107,13 +107,8 @@ export const menuItems = [
     link: "#",
     child: [
       {
-        childtitle: "Add User",
-        childlink: "/",
-      },
-
-      {
         childtitle: "View All Users",
-        childlink: "/",
+        childlink: "view-all-users",
       },
     ],
   },
@@ -133,7 +128,7 @@ export const menuItems = [
 
       {
         childtitle: "View All Notifications",
-        childlink: "/",
+        childlink: "notifications",
       },
     ],
   },
@@ -144,7 +139,7 @@ export const menuItems = [
   {
     title: "Manage Admin",
     icon: "heroicons-outline:cog",
-    link: "#",
+    link: "admin",
   },
   {
     isHeadr: true,

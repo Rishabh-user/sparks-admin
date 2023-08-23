@@ -59,7 +59,7 @@ const Modal = ({
                   leaveFrom={noFade ? "" : "opacity-100"}
                   leaveTo={noFade ? "" : "opacity-0"}
                 >
-                  <div className="fixed inset-0 bg-sparks-900/50 backdrop-filter backdrop-blur-sm" />
+                  <div className="fixed inset-0 bg-slate-900/50 backdrop-filter backdrop-blur-sm" />
                 </Transition.Child>
               )}
 
