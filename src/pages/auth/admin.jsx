@@ -10,7 +10,8 @@ import {
   useGlobalFilter,
   usePagination,
 } from "react-table";
-
+import Textinput from "@/components/ui/Textinput";
+import DropZone from "../forms/file-input/DropZone";
 // Modal
 import Modal from "@/components/ui/Modal";
 
@@ -226,7 +227,7 @@ const Admin = ({ title = "View All Admins" }) => {
             scrollContent
             footerContent={
               <Button
-                text="Accept"
+                text="Save"
                 className="btn-dark "
                 onClick={() => {
                   alert("use Control Modal");
@@ -234,7 +235,42 @@ const Admin = ({ title = "View All Admins" }) => {
               />
             }
           >
-            dstrh
+            <div className="mb-4">
+                <Textinput
+                    label="Name"
+                    id="a_name"
+                    type="text"
+                    placeholder=""
+                />
+            </div>
+            <div className="mb-4">
+                <Textinput
+                    label="Email Id"
+                    id="email"
+                    type="email"
+                    placeholder=""
+                />
+            </div>
+            <div className="mb-4">
+                <Textinput
+                    label="Mobile Number"
+                    id="mobile_no"
+                    type="number"
+                    placeholder=""
+                />
+            </div>
+            <div className="mb-4">
+                <Textinput
+                    label="Mobile Number"
+                    id="mobile_no"
+                    type="number"
+                    placeholder=""
+                />
+            </div>
+            <div className="fromGroup xl:col-span-2 col-span-1">
+                <label className="form-label">Upload Admin image</label>
+                <DropZone />
+            </div>
           </Modal>
           </div>
         </div>

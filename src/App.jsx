@@ -30,7 +30,9 @@ const AddStation = lazy(() => import("./pages/station-masters/add-station"));
 const ViewAllStations = lazy(() => import("./pages/station-masters/view-all-stations"));
 const ViewAllUsers = lazy(() => import("./pages/users-masters/view-all-users"));
 const ViewUser = lazy(() => import("./pages/users-masters/view-user"));
-const Admin = lazy(() => import("./pages/auth/admin"))
+const Admin = lazy(() => import("./pages/auth/admin"));
+const Support = lazy(() => import("./pages/auth/support"));
+const AllNotifications = lazy(() => import("./pages/notifications/all-notifications"));
 
 // components pages
 const Button = lazy(() => import("./pages/components/button"));
@@ -229,6 +231,8 @@ function App() {
           <Route path="view-all-users" element={<ViewAllUsers />} />
           <Route path="view-user" element={<ViewUser />} />
           <Route path="admin" element={<Admin />} />
+          <Route path="support" element={<Support />} />
+          <Route path="all-notifications" element={<AllNotifications />} />
         </Route>
         <Route
           path="/404"

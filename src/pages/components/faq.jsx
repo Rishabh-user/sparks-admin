@@ -57,7 +57,7 @@ const Faq = () => {
             scrollContent
             footerContent={
               <Button
-                text="Accept"
+                text="Save"
                 className="btn-dark "
                 onClick={() => {
                   alert("use Control Modal");
@@ -72,7 +72,7 @@ const Faq = () => {
                 <div className="flex justify-between items-end space-x-5">
                   <div className="flex-1">
                     <Textinput
-                      label="Title"
+                      label="Question"
                       type="text"
                       id={`name${index}`}
                       placeholder="Title"
@@ -81,7 +81,10 @@ const Faq = () => {
                     />
                   </div>               
                 </div>
-                <CKEditor initData="<p>Faq Descriptions</p>" />
+                <div className="fromGroup">
+                  <label className="form-label">Answer</label>
+                  <CKEditor initData="<p>Faq Descriptions</p>" />
+                </div>
               </div>
             </form>
           </Modal>

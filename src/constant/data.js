@@ -128,7 +128,7 @@ export const menuItems = [
 
       {
         childtitle: "View All Notifications",
-        childlink: "notifications",
+        childlink: "all-notifications",
       },
     ],
   },
@@ -148,7 +148,7 @@ export const menuItems = [
   {
     title: "Support",
     icon: "heroicons-outline:chat-bubble-left-right",
-    link: "#",
+    link: "support",
     badge: "15",
   },
   {
