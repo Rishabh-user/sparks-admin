@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
-import Icon from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { CKEditor } from 'ckeditor4-react';
 
 // Modal
@@ -11,36 +11,56 @@ import Modal from "@/components/ui/Modal";
 
 // Accordion
 import Accordion from "@/components/ui/Accordion";
-const items = [
-  {
-    title: "How does Dashcode work?",
-    content:
-      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
-  },
-  {
-    title: "Where i can learn more about using Dashcode?",
-    content:
-      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
-  },
-  {
-    title: "Why Dashcode is so important?",
-    content:
-      "Jornalists call this critical, introductory section the  and when bridge properly executed, it's the that carries your reader from anheadine try at attention-grabbing to the body of your blog post.",
-  },
-];
+
 
 const Faq = () => {
-  const { register, control, handleSubmit, reset, trigger, setError } = useForm(
+  const [faqItems, setFaqItems] = useState([
     {
-      defaultValues: {
-        test: [{ title: "Faq Title", description: "Faq Description" }],
-      },
-    }
-  );
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "test",
+      number: 1,
+      title: 'qwerty',
+      description: 'qwerty123',
+    },
+  ]);
+  const { register, control, handleSubmit, reset, trigger, setError } = useForm({
+    defaultValues: {
+      test: [{ title: "Faq Title", description: "Faq Description" }],
+    },
   });
+  const handleFormSubmit = async (data, { setValue }) => {
+    const newFaq = {
+      number: faqItems.length + 1,
+      title: data.test[0].title || "",
+      description: data.test[0].description || "",
+    };
+  
+    // You can add validation here before adding the new FAQ
+    if (!newFaq.title || !newFaq.description) {
+      setError("test[0].title", {
+        type: "manual",
+        message: "Title and description are required.",
+      });
+      return;
+    }
+  
+    // Update FAQ items
+    setFaqItems((prevItems) => [...prevItems, newFaq]);
+
+    setValue("test[0].description", "", { shouldDirty: true });
+    // Reset form after submission
+    await reset({
+      test: [{ title: "", description: "" }],
+    });
+  };
+  
+  
+  const onDragEnd = (result) => {
+    // Handle drag-and-drop end
+    if (!result.destination) {
+      return;
+    }
+  };
+
+  
   const index = 1;
   return (
     <div>
@@ -57,43 +77,80 @@ const Faq = () => {
             scrollContent
             footerContent={
               <Button
-                text="Save"
+                text="close"
                 className="btn-dark "
-                onClick={() => {
-                  alert("use Control Modal");
-                }}
               />
             }
           >
-            <form onSubmit={handleSubmit((data) => console.log(data))}>
-              <div
-                  className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0"
-                >
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <div className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0">
                 <div className="flex justify-between items-end space-x-5">
                   <div className="flex-1">
                     <Textinput
                       label="Question"
                       type="text"
-                      id={`name${index}`}
                       placeholder="Title"
                       register={register}
-                      name={`test[${index}].title`}
+                      name="test[0].title"
                     />
-                  </div>               
+                  </div>
                 </div>
                 <div className="fromGroup">
                   <label className="form-label">Answer</label>
-                  <CKEditor initData="<p>Faq Descriptions</p>" />
+                  <Controller
+                      name={`test[${0}].description`} // Use backticks for template literal
+                      control={control}
+                      defaultValue={faqItems[0].description} // Set the defaultValue from the faqItems state
+                      render={({ field }) => (
+                        <CKEditor
+                          data={field.value}
+                          onChange={(event) => field.onChange(event.editor.getData())}
+                        />
+                      )}
+                  />
+                </div>  
+                <div className="fromGroup text-end">
+                  <Button type="submit" text="Save" className="btn-primary btn-sm" />
                 </div>
               </div>
             </form>
           </Modal>
         }
       >
-        <div className="">
+        {/* <div className="">
           <Accordion items={items} />
-        </div>
+        </div> */}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {faqItems.map((item, index) => (
+                  <Draggable key={index} draggableId={index.toString()} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        {/* Pass the correct properties to the Accordion component */}
+                        <Accordion items={[
+                            {
+                              title: `${item.number}. ${item.title}`,
+                              description: item.description,
+                            },
+                          ]} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
       </Card>
+      
 
     </div>
   );

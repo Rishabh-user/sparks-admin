@@ -6,15 +6,76 @@ import Textinput from "@/components/ui/Textinput";
 import { CKEditor } from 'ckeditor4-react';
 import DropZone from "../forms/file-input/DropZone";
 import Button from "@/components/ui/Button";
+import Swal from 'sweetalert2';
+import { BASE_URL } from "../../api/api";
 
 const about_us = () => {
-      const [value, setValue] = useState("");
-    
-      const handleFormatter = (e) => {
-        const value = e.target.value;
-        setValue(value);
-      };
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [aboutUsData, setAboutUsData] = useState({
+    type: "aboutus",
+    title: "",
+    description: "",
+    imageURL: "",
+  });
 
+  const handleTitleChange = (e) => {
+    setAboutUsData((prevData) => ({
+      ...prevData,
+      title: e.target.value,
+    }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    setAboutUsData((prevData) => ({
+      ...prevData,
+      description: e.editor.getData(),
+    }));
+  };
+
+  const handleImageChange = (file) => {
+    setAboutUsData((prevData) => ({
+      ...prevData,
+      imageURL: file,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    const { title, description, imageURL } = aboutUsData;
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    if (imageURL) {
+      formData.append("image", imageURL);
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/aboutus-pp-tc`, {
+        method: "POST", // Use POST for sending data
+        body: formData,
+      });
+
+      if (response.ok) {
+        showAlert("success", "About Us data is updated");
+      } else {
+        showAlert("error", "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      showAlert("error", "An error occurred");
+    }
+  };
+
+  const showAlert = (icon, text) => {
+    Swal.fire({
+      title: 'Success',
+      text: text,
+      icon: icon,
+      confirmButtonText: 'OK!',
+    });
+  };
   return (
     <div>
       <Card title="About Us">
@@ -24,18 +85,22 @@ const about_us = () => {
               id="formatter-pn"
               type="text"
               placeholder=""
-              onChange={handleFormatter}
+              value={title}
+              onChange={handleTitleChange}
             />
             <div>
-              <label className="form-label" for="description">Description</label>
-              <CKEditor initData="<p>This is an example CKEditor 4 WYSIWYG editor instance.</p>" />
+              <label className="form-label" htmlFor="description">Description</label>
+              <CKEditor
+                data={description}
+                onChange={handleDescriptionChange}
+              />
             </div>
             <div className="xl:col-span-2 col-span-1">
               <label className="form-label">Upload Banner Image</label>
-              <DropZone />
+              <DropZone  onChange={handleImageChange} />
             </div>
             <div className="d-flex justify-content-end text-right">
-              <Button text="Save" className="btn-primary " />
+              <Button text="Save" className="btn-primary " onClick={handleSubmit} />
             </div>
          
         </div>

@@ -105,9 +105,17 @@ const COLUMNS = [
       return (
         <div className="flex space-x-3 rtl:space-x-reverse">
           <Tooltip content="View" placement="top" arrow animation="shift-away">
-            <button className="action-btn" type="button">
-              <Icon icon="heroicons:eye" />
-            </button>
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => toggleRow(index)}
+              >
+                {isEnabled ? (
+                  <Icon icon="heroicons:eye" />
+                ) : (
+                  <Icon icon="heroicons:eye-slash" />
+                )}
+              </button>
           </Tooltip>
           <Tooltip content="Edit" placement="top" arrow animation="shift-away">
             <button className="action-btn" type="button">

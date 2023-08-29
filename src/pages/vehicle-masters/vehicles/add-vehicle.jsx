@@ -44,20 +44,18 @@ const AddVehicle = () => {
             placeholder=""
           />
           <div className="fromGroup">
-            <label className="form-label" htmlFor="mul_1">
-                Select Connector Type
-            </label>
-            <Select
-                isClearable={true}
-                defaultValue={[connectortype[0], connectortype[2]]}
-                isMulti
-                name="connectortype"
-                options={connectortype}
+              <label className="form-label" htmlFor="brands_1">
+                  Select Vehicle Type
+              </label>
+              <Select      
+                name="vehicletype"
+                options={vehicletype}
                 className="react-select"
                 classNamePrefix="select"
-                id="mul_1"
-            />            
+                id="vehicletype_1"
+              />
           </div>
+          
           <div className="fromGroup">
               <label className="form-label" htmlFor="brands_1">
                   Select Brand
@@ -71,16 +69,19 @@ const AddVehicle = () => {
               />
           </div>
           <div className="fromGroup">
-              <label className="form-label" htmlFor="brands_1">
-                  Select Vehicle Type
-              </label>
-              <Select      
-                name="vehicletype"
-                options={vehicletype}
+            <label className="form-label" htmlFor="mul_1">
+                Select Connector Type
+            </label>
+            <Select
+                isClearable={true}
+                defaultValue={[connectortype[0], connectortype[2]]}
+                isMulti
+                name="connectortype"
+                options={connectortype}
                 className="react-select"
                 classNamePrefix="select"
-                id="vehicletype_1"
-              />
+                id="mul_1"
+            />            
           </div>
           <div className="fromGroup xl:col-span-2 col-span-1">
             <label className="form-label">Upload Vehicle Image</label>

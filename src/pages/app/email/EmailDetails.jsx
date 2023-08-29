@@ -31,7 +31,7 @@ const EmailDetails = () => {
             </button>
           </Tooltip>
         </div>
-        <div className="flex-none flex items-center space-x-4 rtl:space-x-reverse">
+        {/* <div className="flex-none flex items-center space-x-4 rtl:space-x-reverse">
           <Tooltip placement="top" arrow content="Forward">
             <button className="email-icon" type="button">
               <Icon icon="heroicons-outline:logout" />
@@ -62,7 +62,7 @@ const EmailDetails = () => {
               <Icon icon="heroicons-outline:dots-horizontal" />
             </button>
           </Tooltip>
-        </div>
+        </div> */}
       </div>
 
       <div>

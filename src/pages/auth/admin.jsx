@@ -259,14 +259,6 @@ const Admin = ({ title = "View All Admins" }) => {
                     placeholder=""
                 />
             </div>
-            <div className="mb-4">
-                <Textinput
-                    label="Mobile Number"
-                    id="mobile_no"
-                    type="number"
-                    placeholder=""
-                />
-            </div>
             <div className="fromGroup xl:col-span-2 col-span-1">
                 <label className="form-label">Upload Admin image</label>
                 <DropZone />

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "./common/login-form";
-import useDarkMode from "@/hooks/useDarkMode";
 import { ToastContainer } from "react-toastify";
 
 // image import
@@ -9,7 +8,7 @@ import Logo from "@/assets/images/logo/logo.png";
 import Illustration from "@/assets/images/auth/splash.png";
 
 const login = () => {
-  const [isDark] = useDarkMode();
+  
   return (
     <>
       <ToastContainer />

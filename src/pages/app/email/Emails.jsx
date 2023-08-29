@@ -103,7 +103,7 @@ const Emails = ({ email }) => {
 
       <div className="grow"></div>
 
-      <span>
+      {/* <span>
         <div className="flex-1 flex space-x-4 items-center rtl:space-x-reverse">
           <span className="flex-none space-x-2 text-xs text-slate-900 dark:text-slate-300 rtl:space-x-reverse">
             <span>{lastime}</span>
@@ -121,7 +121,7 @@ const Emails = ({ email }) => {
             className="transition duration-150 hover:text-danger-500"
           />
         </span>
-      </span>
+      </span> */}
     </li>
   );
 };
