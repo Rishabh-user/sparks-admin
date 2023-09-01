@@ -12,12 +12,12 @@ import { BASE_URL } from "../../api/api";
 const about_us = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [aboutUsData, setAboutUsData] = useState({
     type: "aboutus",
     title: "",
     description: "",
-    imageURL: "",
+    //imageURL: "",
   });
 
   const handleTitleChange = (e) => {
@@ -34,12 +34,12 @@ const about_us = () => {
     }));
   };
 
-  const handleImageChange = (file) => {
-    setAboutUsData((prevData) => ({
-      ...prevData,
-      imageURL: file,
-    }));
-  };
+  // const handleImageChange = (file) => {
+  //   setAboutUsData((prevData) => ({
+  //     ...prevData,
+  //     imageURL: file,
+  //   }));
+  // };
 
   const handleSubmit = async () => {
     const { title, description, imageURL } = aboutUsData;
@@ -47,13 +47,17 @@ const about_us = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    if (imageURL) {
-      formData.append("image", imageURL);
-    }
+    // if (imageURL) {
+    //   formData.append("image", imageURL);
+    // }
 
     try {
       const response = await fetch(`${BASE_URL}/aboutus-pp-tc`, {
         method: "POST", // Use POST for sending data
+        // headers: {
+        //   'Accept': '*/*',
+        //   'Content-Type': 'application/json',
+        // },
         body: formData,
       });
 
@@ -97,7 +101,7 @@ const about_us = () => {
             </div>
             <div className="xl:col-span-2 col-span-1">
               <label className="form-label">Upload Banner Image</label>
-              <DropZone  onChange={handleImageChange} />
+              {/* <DropZone  onChange={handleImageChange} /> */}
             </div>
             <div className="d-flex justify-content-end text-right">
               <Button text="Save" className="btn-primary " onClick={handleSubmit} />
