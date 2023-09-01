@@ -126,7 +126,7 @@
 }
 .menu-item-active {
   .menu-link {
-    @apply bg-slate-800 dark:bg-slate-700;
+    @apply bg-sparks-900 dark:bg-slate-700;
     .icon-box,
     .menu-icon,
     .text-box {
@@ -134,6 +134,6 @@
     }
   }
   .menu-badge {
-    @apply bg-slate-100  text-slate-900;
+    @apply bg-sparks-100  text-slate-900;
   }
 }
