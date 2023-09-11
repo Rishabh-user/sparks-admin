@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
 import Fileinput from "@/components/ui/Fileinput";
-import { CKEditor } from 'ckeditor4-react';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
 import { BASE_URL } from "../../api/api";
@@ -11,6 +12,30 @@ const AboutUs = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected image file
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  useEffect(() => {
+    // Fetch the initial data from the GET API
+    fetch(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch data");
+        }
+      })
+      .then((data) => {
+        // Populate the fields with the data from the GET request
+        setTitle(data.data.title);
+        setDescription(data.data.description);
+        // You may need to set selectedFile based on the image URL if needed
+        setDataLoaded(true);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        showAlert("error", "Failed to fetch data");
+      });
+  }, []);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -83,6 +108,11 @@ const AboutUs = () => {
     });
   };
 
+  if (!dataLoaded) {
+    // Display a loading indicator while data is being fetched
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Card title="About Us">
@@ -92,7 +122,7 @@ const AboutUs = () => {
             id="formatter-pn"
             type="text"
             placeholder=""
-            value={title}
+            defaultValue={title}
             onChange={handleTitleChange}
           />
           <div>
@@ -100,6 +130,15 @@ const AboutUs = () => {
             <CKEditor
               data={description}
               onChange={handleDescriptionChange}
+            />
+            <CKEditor
+              id="full-featured-non-premium"
+              editor={ClassicEditor}
+              data={description}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setValue("description", data);
+              }}
             />
           </div>
           <div className="xl:col-span-2 col-span-1">
