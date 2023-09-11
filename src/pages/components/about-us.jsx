@@ -7,13 +7,11 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
 import { BASE_URL } from "../../api/api";
-import axios from 'axios';
 
 const AboutUs = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected image file
-<<<<<<< HEAD
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -37,38 +35,8 @@ const AboutUs = () => {
         console.error("Error:", error);
         showAlert("error", "Failed to fetch data");
       });
-=======
-  const [imageUrl, setImageUrl] = useState("");
-  const [dataLoaded, setDataLoaded] = useState("false");
-  const [isEditMode, setIsEditMode] = useState(true); // State variable to control edit mode
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`);
-  
-        if (response.status !== 200) {
-          throw new Error(`Request failed with status: ${response.status}`);
-        }
-  
-        const data = response.data.data;
-        setTitle(data.title);
-        setDescription(data.description);
-        setImageUrl(data.imageUrl);
-        setDataLoaded(true);
-        setIsEditMode(false);
-        //console.log(data.imageUrl);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-  
-    fetchData();
->>>>>>> fe67a6d86b8f078820e122cba084d537ae360b32
   }, []);
 
-  const data = dataLoaded;
-  
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -79,14 +47,8 @@ const AboutUs = () => {
 
   const handleImageChange = (e) => {
     setSelectedFile(e.target.files[0]);
-
-    const url = URL.createObjectURL(e.target.files[0]);
-      setImageUrl(url);
-
   };
-  const handleEditClick = () => {
-    setIsEditMode(true); // Set edit mode to true when "Edit" button is clicked
-  };
+
   const handleSubmit = async () => {
     try {
       if (!selectedFile) {
@@ -128,12 +90,12 @@ const AboutUs = () => {
 
       if (response.ok) {
         showAlert("success", "About Us data is updated");
-        setIsEditMode(false);
       } else {
         showAlert("error", "An error occurred");
       }
     } catch (error) {
       console.error("Error:", error);
+      showAlert("error", "An error occurred");
     }
   };
 
@@ -154,28 +116,22 @@ const AboutUs = () => {
   return (
     <div>
       <Card title="About Us">
-        <div className="space-y-5">         
+        <div className="space-y-5">
           <Textinput
             label="Title"
             id="formatter-pn"
             type="text"
             placeholder=""
-<<<<<<< HEAD
-=======
-            readonly={!isEditMode && dataLoaded && title !== ""} // Set readOnly based on edit mode
-            value={title}
->>>>>>> fe67a6d86b8f078820e122cba084d537ae360b32
             defaultValue={title}
             onChange={handleTitleChange}
-          />         
+          />
           <div>
             <label className="form-label" htmlFor="description">Description</label>
             <CKEditor
               data={description}
-              readonly={!isEditMode && dataLoaded} // Set readOnly based on edit mode
               onChange={handleDescriptionChange}
-              //config={{ readOnly: true }}
             />
+            {description}
             <CKEditor
               id="full-featured-non-premium"
               editor={ClassicEditor}
@@ -187,28 +143,17 @@ const AboutUs = () => {
             />
           </div>
           <div className="xl:col-span-2 col-span-1">
-            <label className="form-label">Upload Banner Image</label>            
+            <label className="form-label">Upload Banner Image</label>
             <Fileinput
               name="basic"
-              type="url"
-              value={imageUrl}
-              defaultValue={imageUrl}
               selectedFile={selectedFile}
-              placeholder={imageUrl}
-              readonly={true} // Set readOnly based on edit mode
               onChange={handleImageChange}
-            />             
-          </div>          
+            />
+          </div>
           <div className="d-flex justify-content-end text-right">
-            {dataLoaded ? (
-                isEditMode ? (
-                  <Button text="Save" className="btn-primary" onClick={handleSubmit} />
-                ) : (
-                  <Button text="Edit" className="btn-primary" onClick={handleEditClick} />
-                )
-            ) : null}
-          </div>          
-        </div>      
+            <Button text="Save" className="btn-primary" onClick={handleSubmit} />
+          </div>
+        </div>
       </Card>
     </div>
   );
