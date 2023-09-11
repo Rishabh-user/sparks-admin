@@ -1,52 +1,167 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
-//import Textarea from "@/components/ui/Textarea";
-// import Select from "@/components/ui/Select";
+import Fileinput from "@/components/ui/Fileinput";
 import { CKEditor } from 'ckeditor4-react';
-import DropZone from "../forms/file-input/DropZone";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
+import { BASE_URL } from "../../api/api";
+import axios from 'axios';
 
 const PrivacyPolicy = () => {
-      const [value, setValue] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null); // Store the selected image file
+  const [imageUrl, setImageUrl] = useState("");
+  const [dataLoaded, setDataLoaded] = useState("false");
+  const [isEditMode, setIsEditMode] = useState(false); // State variable to control edit mode
+
+  const buttonText = isEditMode ? "Save" : "Edit";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/getaboutus-pp-tc?type=privacypolicy`);
+  
+        if (response.status !== 200) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+  
+        const data = response.data.data;
+        setTitle(data.title);
+        setDescription(data.description);
+        setImageUrl(data.imageUrl);
+        setDataLoaded(true);
+        setIsEditMode(false);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  const data = dataLoaded;
+  
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.editor.getData());
+  };
+
+  const handleImageChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+    const url = URL.createObjectURL(e.target.files[0]);
+      setImageUrl(url);
+
+  };
     
-      const handleFormatter = (e) => {
-        const value = e.target.value;
-        setValue(value);
+  const handleEditClick = () => {
+    setIsEditMode(true); // Set edit mode to true when "Edit" button is clicked
+  };
+  const handleSubmit = async () => {
+    try {
+      if (!selectedFile) {
+        showAlert("error", "Please select an image");
+        return;
+      }
+
+      // Upload the image first
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const imageUploadResponse = await fetch(`${BASE_URL}/upload-image/aboutus`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!imageUploadResponse.ok) {
+        showAlert("error", "Image upload failed");
+        return;
+      }
+
+      const imageUploadData = await imageUploadResponse.json();
+
+      // Then submit the rest of the data including the image URL
+      const data = {
+        type: "privacypolicy",
+        title: title,
+        description: description,
+        imageURL: imageUploadData.data.url, // Use the URL from the image upload response
       };
-      const showAlert = () => {
-        Swal.fire({
-          title: 'Succes',
-          text: 'About Us dats is updated',
-          icon: 'success',
-          confirmButtonText: 'ok!',
-        });
-      };
+
+      const response = await fetch(`${BASE_URL}/aboutus-pp-tc`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        showAlert("success", "Privacy Policy data is updated");
+        setIsEditMode(false);
+      } else {
+        showAlert("error", "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      showAlert("error", "An error occurred");
+    }
+  };
+
+  const showAlert = (icon, text) => {
+    Swal.fire({
+      title: 'Success',
+      text: text,
+      icon: icon,
+      confirmButtonText: 'OK!',
+    });
+  };
   return (
     <div>
-      <Card title="Privacy Policy">
-        <div className="space-y-5">
-            <Textinput
-              label="Title"
-              id="formatter-pn"
-              type="text"
-              placeholder=""
-              onChange={handleFormatter}
+      <Card title="Privacy Policy">      
+        <div className="space-y-5">         
+          <Textinput
+            label="Title"
+            id="formatter-pn"
+            type="text"
+            placeholder=""
+            readonly={!isEditMode || !dataLoaded} // Set readOnly based on edit mode
+            value={title}
+            defaultValue={title}            
+            onChange={handleTitleChange}
+          />         
+          <div>
+            <label className="form-label" htmlFor="description">Description</label>
+            <CKEditor
+              data={description}
+              readonly={!isEditMode || !dataLoaded} // Set readOnly based on edit mode
+              onChange={handleDescriptionChange}
+              //config={{ readOnly: true }}
             />
-            <div>
-              <label className="form-label" for="description">Description</label>
-              <CKEditor initData="<p></p>" />
-            </div>
-            <div className="xl:col-span-2 col-span-1">
-              <label className="form-label">Upload Banner Image</label>
-              <DropZone />
           </div>
+          <div className="xl:col-span-2 col-span-1">
+            <label className="form-label">Upload Banner Image</label>            
+            <Fileinput
+              name="basic"
+              type="url"
+              value={imageUrl}
+              defaultValue={imageUrl}
+              selectedFile={selectedFile}
+              placeholder={imageUrl}
+              disabled={!isEditMode || !dataLoaded} // Set readOnly based on edit mode
+              onChange={handleImageChange}
+            />             
+          </div>          
           <div className="d-flex justify-content-end text-right">
-            <Button text="Save" className="btn-primary " onClick={showAlert} />
-          </div>
-          {value.toLowerCase()}
-        </div>
+            {dataLoaded ? (
+              <Button text={buttonText} className="btn-primary" onClick={isEditMode ? handleSubmit : handleEditClick} />
+            ) : null}
+          </div>          
+        </div>      
       </Card>
     </div>
   );
