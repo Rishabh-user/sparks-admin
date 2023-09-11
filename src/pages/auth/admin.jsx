@@ -11,9 +11,12 @@ import {
   usePagination,
 } from "react-table";
 import Textinput from "@/components/ui/Textinput";
-import DropZone from "../forms/file-input/DropZone";
+//import DropZone from "../forms/file-input/DropZone";
 // Modal
 import Modal from "@/components/ui/Modal";
+import { BASE_URL } from "../../api/api";
+import Fileinput from "@/components/ui/Fileinput";
+import axios from "axios";
 
 //import GlobalFilter from "./GlobalFilter";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
@@ -132,7 +135,7 @@ const COLUMNS = [
             
              `}
           >
-            {row?.cell?.value}
+           {row?.cell?.value}
           </span>
         </span>
       );
@@ -161,9 +164,9 @@ const COLUMNS = [
             animation="shift-away"
             theme="danger"
           >
-            <button className="action-btn" type="button">
-              <Icon icon="heroicons:trash" />
-            </button>
+          <button className="action-btn" type="button">
+            <Icon icon="heroicons:trash" />
+          </button>
           </Tooltip>
         </div>
       );
@@ -172,6 +175,56 @@ const COLUMNS = [
 ];
 
 const Admin = ({ title = "View All Admins" }) => { 
+  const [password, setPassword] = useState('');
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      alert('Please select an image.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      const response = await axios.post(
+        'http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/upload-image/adminprofile',
+        formData
+      );
+
+      if (response.status === 200) {
+        // Handle success, e.g., display a success message to the user
+        console.log('Image uploaded successfully');
+      } else {
+        // Handle other status codes (e.g., 400, 500) as needed
+        console.error('Error uploading image:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      // Handle network or other errors
+    }
+  };
+
+  const generatePassword = () => {
+    const length = 12; // Specify the desired length of the password
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?'; // Define the character set for the password
+    let newPassword = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      newPassword += charset.charAt(randomIndex); // Use charAt to access characters at the specified index
+    }
+
+    setPassword(newPassword);
+  };
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => advancedTable, []);
 
@@ -225,16 +278,17 @@ const Admin = ({ title = "View All Admins" }) => {
             className="max-w-5xl"
             centered
             scrollContent
-            footerContent={
-              <Button
-                text="Save"
-                className="btn-dark "
-                onClick={() => {
-                  alert("use Control Modal");
-                }}
-              />
-            }
+            // footerContent={
+            //   <Button
+            //     text="Save"
+            //     className="btn-dark "
+            //     onClick={() => {
+            //       alert("use Control Modal");
+            //     }}
+            //   />
+            // }
           >
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
                 <Textinput
                     label="Name"
@@ -251,6 +305,25 @@ const Admin = ({ title = "View All Admins" }) => {
                     placeholder=""
                 />
             </div>
+            <div className="flex mb-4 space-y-4 items-end">
+              <div className="flex-1 ">
+                <Textinput
+                    label="Create Password"
+                    id="password"
+                    type="text"
+                    value={password}
+                    defaultValue={password}  
+                    placeholder=""                    
+                />
+              </div>                
+              <div>
+                <Button
+                  text="Generate Password"
+                  className="btn-dark btn-sm"
+                  onClick={generatePassword}
+                />
+              </div>                
+            </div>
             <div className="mb-4">
                 <Textinput
                     label="Mobile Number"
@@ -259,10 +332,21 @@ const Admin = ({ title = "View All Admins" }) => {
                     placeholder=""
                 />
             </div>
-            <div className="fromGroup xl:col-span-2 col-span-1">
-                <label className="form-label">Upload Admin image</label>
-                <DropZone />
+            <div className="fromGroup xl:col-span-2 col-span-1 mb-4">
+                <label className="form-label">Upload Admin image</label>                
+                <Fileinput 
+                  type="file" 
+                  onChange={handleFileChange} 
+                />
             </div>
+            <div className="fromGroup xl:col-span-2 col-span-1 text-right">
+              <Button
+                text="Save"
+                type="submit"
+                className="btn-dark"                
+              />              
+            </div>
+          </form>
           </Modal>
           </div>
         </div>
