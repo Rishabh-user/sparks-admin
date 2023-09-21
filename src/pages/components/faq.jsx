@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
 import Button from "@/components/ui/Button";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { CKEditor } from 'ckeditor4-react';
+import axios from "axios";
 
 // Modal
 import Modal from "@/components/ui/Modal";
@@ -26,6 +27,37 @@ const Faq = () => {
       test: [{ title: "Faq Title", description: "Faq Description" }],
     },
   });
+  const fetchFAQsFromAPI = async () => {
+    const accessToken = localStorage.getItem('accessToken');   
+    const headers = {
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${accessToken}`, 
+      'Content-Type': 'application/json', 
+    };
+    try {
+      const response = await axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/get-allfaq', {
+        headers: headers,
+      });
+      return response.data.data; // Assuming the FAQs are in response.data.data
+      
+    } catch (error) {
+      console.error('Error fetching FAQs:', error);
+      return []; // Return an empty array in case of an error
+    }
+  };
+
+  const fetchFAQs = async () => {
+    const fetchedFAQs = await fetchFAQsFromAPI();
+    
+    setFaqItems(fetchedFAQs.data);
+    console.log(fetchedFAQs);
+  };
+
+  useEffect(() => {
+    fetchFAQs(); // Fetch FAQs when the component mounts
+  }, []);
+
   const handleFormSubmit = async (data, { setValue }) => {
     const newFaq = {
       number: faqItems.length + 1,
@@ -82,7 +114,7 @@ const Faq = () => {
               />
             }
           >
-            <form onSubmit={handleSubmit(handleFormSubmit)}>
+            {/* <form onSubmit={handleSubmit(handleFormSubmit)}>
               <div className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0">
                 <div className="flex justify-between items-end space-x-5">
                   <div className="flex-1">
@@ -113,7 +145,7 @@ const Faq = () => {
                   <Button type="submit" text="Save" className="btn-primary btn-sm" />
                 </div>
               </div>
-            </form>
+            </form> */}
           </Modal>
         }
       >
@@ -124,25 +156,28 @@ const Faq = () => {
           <Droppable droppableId="droppable">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                {faqItems.map((item, index) => (
-                  <Draggable key={index} draggableId={index.toString()} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {/* Pass the correct properties to the Accordion component */}
-                        <Accordion items={[
+                {faqItems && faqItems.length > 0 ? (
+                  faqItems.map((item, index) => (
+                    <Draggable key={item.id} draggableId={item.id ? item.id.toString() : `item-${index}`} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Accordion items={[
                             {
-                              title: `${item.number}. ${item.title}`,
-                              description: item.description,
+                              title: `${item?.questionSeqno || ''}. ${item?.question || ''}`,
+                              description: item?.answer || '',
                             },
                           ]} />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))
+                ) : (
+                  <p>No FAQs available.</p>
+                )}
                 {provided.placeholder}
               </div>
             )}
