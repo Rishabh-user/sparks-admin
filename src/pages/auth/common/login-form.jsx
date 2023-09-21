@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { handleLogin } from "./store";
 import { toast } from "react-toastify";
+import axios from "axios";
 const schema = yup
   .object({
     email: yup.string().email("Invalid email").required("Email is Required"),
@@ -28,50 +29,70 @@ const LoginForm = () => {
     mode: "all",
   });
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    const user = users.find(
-      (user) => user.email === data.email && user.password === data.password
-    );
-    if (user) {
-      dispatch(handleLogin(true));
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
-    } else {
-      toast.error("Invalid credentials", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch(
+        'http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/auth/v1/admin/login/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': '*/*',
+          },
+          body: JSON.stringify({
+            userName: data.email, // Assuming "email" corresponds to the user's email.
+            password: data.password,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const accessToken = responseData.data.accessToken;
+        
+        localStorage.setItem('accessToken', accessToken);
+
+        dispatch(handleLogin(true));
+        toast.success('Login successful', {
+          position: 'top-right',
+          autoClose: 2000, // Duration in milliseconds
+        });
+        navigate('/dashboard');
+      } else {
+        // Handle login error, e.g., display an error message.
+        console.error('Login failed');
+        toast.error('Login failed', {
+          position: 'top-right',
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      // Handle any network or other errors.
+      console.error('Login failed:', error);
     }
   };
 
   const [checked, setChecked] = useState(false);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Textinput
         name="email"
-        label="email"
-        defaultValue={users[0].email}
+        label="Email"
         type="email"
         register={register}
         error={errors.email}
         className="h-[48px]"
+        {...register('email')}
       />
       <Textinput
         name="password"
-        label="passwrod"
+        label="Password"
         type="password"
-        defaultValue={users[0].password}
         register={register}
         error={errors.password}
         className="h-[48px]"
+        {...register('password')}
       />
       <div className="flex justify-between">
         <Checkbox
@@ -83,11 +104,13 @@ const LoginForm = () => {
           to="/forgot-password"
           className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
         >
-          Forgot Password?{" "}
+          Forgot Password?
         </Link>
       </div>
 
-      <button className="btn btn-primary block w-full text-center">Sign in</button>
+      <button type="submit" className="btn btn-primary block w-full text-center">
+        Sign in
+      </button>
     </form>
   );
 };

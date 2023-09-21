@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
@@ -22,198 +22,179 @@ import axios from "axios";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
 import { Link } from "react-router-dom";
-export const advancedTable = [
-    {
-        id: 1,    
-        users: {
-            name: "Saryu Sirohi",
-            image: customer1,
-          },
-        mobileno: "9876543210",
-        emailid: "saryu@targeticon",
-        date: "3/26/2022",
-        status: "active",
-        image: customer1,
-        action: null,
-    },
-    {
-      id: 2,  
-      users: {
-        name: "Saryu Sirohi",
-        image: customer1,
-      },
-        mobileno: "9876543210",
-        emailid: "saryu@targeticon",
-        date: "3/26/2022",
-        status: "active",
-        image: customer1,
-        action: null, 
-  },
-  {
-    id: 3, 
-    users: {
-        name: "Saryu Sirohi",
-        image: customer1,
-      },
-    mobileno: "9876543210",
-    emailid: "saryu@targeticon",
-    date: "3/26/2022",
-    status: "active",
-    image: customer1,
-    action: null, 
-},
-]
+// export const advancedTable = [
+//     {
+//         id: 1,    
+//         users: {
+//             name: "Saryu Sirohi",
+//             image: customer1,
+//           },
+//         mobileno: "9876543210",
+//         emailid: "saryu@targeticon",
+//         date: "3/26/2022",
+//         status: "active",
+//         image: customer1,
+//         action: null,
+//     },
+//     {
+//       id: 2,  
+//       users: {
+//         name: "Saryu Sirohi",
+//         image: customer1,
+//       },
+//         mobileno: "9876543210",
+//         emailid: "saryu@targeticon",
+//         date: "3/26/2022",
+//         status: "active",
+//         image: customer1,
+//         action: null, 
+//   },
+//   {
+//     id: 3, 
+//     users: {
+//         name: "Saryu Sirohi",
+//         image: customer1,
+//       },
+//     mobileno: "9876543210",
+//     emailid: "saryu@targeticon",
+//     date: "3/26/2022",
+//     status: "active",
+//     image: customer1,
+//     action: null, 
+// },
+// ]
+// const COLUMNS = [
+//   {
+//     Header: "Id",
+//     accessor: "id",
+//     Cell: (row) => {
+//       return <span>{row?.cell?.value}</span>;
+//     },
+//   }, 
+//   {
+//     Header: "Users",
+//     accessor: "users",
+//     Cell: (row) => {
+//       return (
+//         <div>
+//           <span className="inline-flex items-center">
+//             <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+//               <img
+//                 src={row?.cell?.value.image}
+//                 alt=""
+//                 className="object-cover w-full h-full rounded-full"
+//               />
+//             </span>
+//             <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+//               {row?.cell?.value.name}
+//             </span>
+//           </span>
+//         </div>
+//       );
+//     },
+//   }, 
+//   {
+//     Header: "Mobile Number",
+//     accessor: "mobileNumber",
+//     Cell: (row) => {
+//       return <span>{row?.cell?.value}</span>;
+//     },
+//   },  
+//   {
+//     Header: "Email Id",
+//     accessor: "email",
+//     Cell: (row) => {
+//       return <span>{row?.cell?.value}</span>;
+//     },
+//   },
+//   {
+//     Header: "date",
+//     accessor: "date",
+//     Cell: (row) => {
+//       return <span>{row?.cell?.value}</span>;
+//     },
+//   },
+
+//   {
+//     Header: "status",
+//     accessor: "status",
+//     Cell: (row) => {
+//       return (
+//         <span className="block w-full">
+//           <span
+//             className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+//               row?.cell?.value === "active"
+//                 ? "text-success-500 bg-success-500"
+//                 : ""
+//             }
+//             ${
+//               row?.cell?.value === "inactive"
+//                 ? "text-danger-500 bg-danger-500"
+//                 : ""
+//             }
+            
+//              `}
+//           >
+//            {row?.cell?.value}
+//           </span>
+//         </span>
+//       );
+//     },
+//   },
+//   {
+//     Header: "action",
+//     accessor: "action",
+//     Cell: (row) => {
+//       return (
+//         <div className="flex space-x-3 rtl:space-x-reverse">
+//           <Tooltip content="View" placement="top" arrow animation="shift-away">
+//             <Link to="/view-user" className="action-btn" type="button">
+//               <Icon icon="heroicons:eye" />
+//             </Link>
+//           </Tooltip>
+//           <Tooltip content="Edit" placement="top" arrow animation="shift-away">
+//             <button className="action-btn" type="button">
+//               <Icon icon="heroicons:pencil-square" />
+//             </button>
+//           </Tooltip>
+//           <Tooltip
+//             content="Delete"
+//             placement="top"
+//             arrow
+//             animation="shift-away"
+//             theme="danger"
+//           >
+//           <button className="action-btn" type="button">
+//             <Icon icon="heroicons:trash" />
+//           </button>
+//           </Tooltip>
+//         </div>
+//       );
+//     },
+//   },
+// ];
 const COLUMNS = [
   {
-    Header: "Id",
-    accessor: "id",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
-  }, 
-  {
-    Header: "Users",
-    accessor: "users",
-    Cell: (row) => {
-      return (
-        <div>
-          <span className="inline-flex items-center">
-            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
-              <img
-                src={row?.cell?.value.image}
-                alt=""
-                className="object-cover w-full h-full rounded-full"
-              />
-            </span>
-            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-              {row?.cell?.value.name}
-            </span>
-          </span>
-        </div>
-      );
-    },
-  }, 
-  {
-    Header: "Mobile Number",
-    accessor: "mobileno",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
-  },  
-  {
-    Header: "Email Id",
-    accessor: "emailid",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
+    Header: 'ID',
+    accessor: 'id',
   },
+  
   {
-    Header: "date",
-    accessor: "date",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
+    Header: 'Email',
+    accessor: 'email',
   },
-
+  
   {
-    Header: "status",
-    accessor: "status",
-    Cell: (row) => {
-      return (
-        <span className="block w-full">
-          <span
-            className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-              row?.cell?.value === "active"
-                ? "text-success-500 bg-success-500"
-                : ""
-            }
-            ${
-              row?.cell?.value === "inactive"
-                ? "text-danger-500 bg-danger-500"
-                : ""
-            }
-            
-             `}
-          >
-           {row?.cell?.value}
-          </span>
-        </span>
-      );
-    },
+    Header: 'Mobile Number',
+    accessor: 'mobileNumber',
   },
-  {
-    Header: "action",
-    accessor: "action",
-    Cell: (row) => {
-      return (
-        <div className="flex space-x-3 rtl:space-x-reverse">
-          <Tooltip content="View" placement="top" arrow animation="shift-away">
-            <Link to="/view-user" className="action-btn" type="button">
-              <Icon icon="heroicons:eye" />
-            </Link>
-          </Tooltip>
-          <Tooltip content="Edit" placement="top" arrow animation="shift-away">
-            <button className="action-btn" type="button">
-              <Icon icon="heroicons:pencil-square" />
-            </button>
-          </Tooltip>
-          <Tooltip
-            content="Delete"
-            placement="top"
-            arrow
-            animation="shift-away"
-            theme="danger"
-          >
-          <button className="action-btn" type="button">
-            <Icon icon="heroicons:trash" />
-          </button>
-          </Tooltip>
-        </div>
-      );
-    },
-  },
+  // Add other columns as needed
 ];
 
 const Admin = ({ title = "View All Admins" }) => { 
   const [password, setPassword] = useState('');
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!selectedFile) {
-      alert('Please select an image.');
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-
-      const response = await axios.post(
-        'http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/upload-image/adminprofile',
-        formData
-      );
-
-      if (response.status === 200) {
-        // Handle success, e.g., display a success message to the user
-        console.log('Image uploaded successfully');
-      } else {
-        // Handle other status codes (e.g., 400, 500) as needed
-        console.error('Error uploading image:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      // Handle network or other errors
-    }
-  };
-
-  const generatePassword = () => {
+   const generatePassword = () => {
     const length = 12; // Specify the desired length of the password
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?'; // Define the character set for the password
     let newPassword = '';
@@ -225,8 +206,33 @@ const Admin = ({ title = "View All Admins" }) => {
 
     setPassword(newPassword);
   };
+  const [userData, setUserData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => { 
+    const accessToken = localStorage.getItem('accessToken');   
+    const headers = {
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${accessToken}`, 
+      'Content-Type': 'application/json', 
+    };
+    
+    axios.get(`${BASE_URL}/get-all-user`, {
+      headers: headers,
+    })    
+      .then((response) => {
+        const { data } = response.data.data;
+        setUserData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setIsLoading(false);
+      });
+  }, []);
   const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => advancedTable, []);
+  const data = useMemo(() => userData, []);
 
   const tableInstance = useTable(
     {
@@ -242,6 +248,7 @@ const Admin = ({ title = "View All Admins" }) => {
   );
   const {
     getTableProps,
+    rows,
     getTableBodyProps,
     headerGroups,
     footerGroups,
@@ -263,6 +270,8 @@ const Admin = ({ title = "View All Admins" }) => {
     globalFilter, 
     pageIndex, 
     pageSize } = state;
+
+   
   
   return (
     <div>
@@ -288,7 +297,7 @@ const Admin = ({ title = "View All Admins" }) => {
             //   />
             // }
           >
-          <form onSubmit={handleSubmit}>
+          <form >
             <div className="mb-4">
                 <Textinput
                     label="Name"
@@ -334,9 +343,8 @@ const Admin = ({ title = "View All Admins" }) => {
             </div>
             <div className="fromGroup xl:col-span-2 col-span-1 mb-4">
                 <label className="form-label">Upload Admin image</label>                
-                <Fileinput 
-                  type="file" 
-                  onChange={handleFileChange} 
+                <Fileinput                  
+                   
                 />
             </div>
             <div className="fromGroup xl:col-span-2 col-span-1 text-right">
@@ -352,7 +360,7 @@ const Admin = ({ title = "View All Admins" }) => {
         </div>
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden ">
+             <div className="overflow-hidden ">
               <table
                 className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
                 {...getTableProps}
@@ -400,8 +408,9 @@ const Admin = ({ title = "View All Admins" }) => {
                     );
                   })}
                 </tbody>
-              </table>
-            </div>
+              </table>              
+            </div> 
+            
           </div>
         </div>
         <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">

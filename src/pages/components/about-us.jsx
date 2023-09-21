@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
 import Fileinput from "@/components/ui/Fileinput";
-import { CKEditor } from 'ckeditor4-react';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
 import { BASE_URL } from "../../api/api";
@@ -14,12 +15,25 @@ const AboutUs = () => {
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected image file
   const [imageUrl, setImageUrl] = useState("");
   const [dataLoaded, setDataLoaded] = useState("false");
-  const [isEditMode, setIsEditMode] = useState(true); // State variable to control edit mode
+ // const [isEditMode, setIsEditMode] = useState(true); // State variable to control edit mode
   
+
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      console.error('Access token not found.');
+      setIsLoading(false);
+      return;
+    } 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`);
+        const response = await axios.get(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`, {
+          headers: {
+            
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
   
         if (response.status !== 200) {
           throw new Error(`Request failed with status: ${response.status}`);
@@ -30,7 +44,6 @@ const AboutUs = () => {
         setDescription(data.description);
         setImageUrl(data.imageUrl);
         setDataLoaded(true);
-        setIsEditMode(false);
         //console.log(data.imageUrl);
       } catch (error) {
         console.error("Error:", error);
@@ -40,7 +53,6 @@ const AboutUs = () => {
     fetchData();
   }, []);
 
-  const data = dataLoaded;
   
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -57,9 +69,7 @@ const AboutUs = () => {
       setImageUrl(url);
 
   };
-  const handleEditClick = () => {
-    setIsEditMode(true); // Set edit mode to true when "Edit" button is clicked
-  };
+
   const handleSubmit = async () => {
     try {
       if (!selectedFile) {
@@ -101,7 +111,6 @@ const AboutUs = () => {
 
       if (response.ok) {
         showAlert("success", "About Us data is updated");
-        setIsEditMode(false);
       } else {
         showAlert("error", "An error occurred");
       }
@@ -128,18 +137,25 @@ const AboutUs = () => {
             id="formatter-pn"
             type="text"
             placeholder=""
-            readonly={!isEditMode && dataLoaded && title !== ""} // Set readOnly based on edit mode
+            
             value={title}
             defaultValue={title}
             onChange={handleTitleChange}
           />         
           <div>
-            <label className="form-label" htmlFor="description">Description</label>
+            <label className="form-label" htmlFor="description">Description</label>     
             <CKEditor
               data={description}
-              readonly={!isEditMode && dataLoaded} // Set readOnly based on edit mode
               onChange={handleDescriptionChange}
-              //config={{ readOnly: true }}
+            />       
+            <CKEditor
+              id="full-featured-non-premium"
+              editor={ClassicEditor}
+              data={description}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDescription("description", data);
+              }}
             />
           </div>
           <div className="xl:col-span-2 col-span-1">
@@ -151,18 +167,12 @@ const AboutUs = () => {
               defaultValue={imageUrl}
               selectedFile={selectedFile}
               placeholder={imageUrl}
-              readonly={true} // Set readOnly based on edit mode
               onChange={handleImageChange}
             />             
           </div>          
           <div className="d-flex justify-content-end text-right">
-            {dataLoaded ? (
-                isEditMode ? (
-                  <Button text="Save" className="btn-primary" onClick={handleSubmit} />
-                ) : (
-                  <Button text="Edit" className="btn-primary" onClick={handleEditClick} />
-                )
-            ) : null}
+            <Button text="Save" className="btn-primary" onClick={handleSubmit} />
+         
           </div>          
         </div>      
       </Card>
