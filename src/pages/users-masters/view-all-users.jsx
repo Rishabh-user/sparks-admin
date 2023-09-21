@@ -14,54 +14,54 @@ import {
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
 import { Link } from "react-router-dom";
-// export const advancedTable = [
-//     {
-//         id: 1,    
-//         users: {
-//             name: "Saryu Sirohi",
-//             image: customer1,
-//           },
-//         mobileno: "9876543210",
-//         emailid: "saryu@targeticon",
-//         date: "3/26/2022",
-//         status: "active",
-//         image: customer1,
-//         action: null,
-//     },
-//     {
-//       id: 2,  
-//       users: {
-//         name: "Saryu Sirohi",
-//         image: customer1,
-//       },
-//         mobileno: "9876543210",
-//         emailid: "saryu@targeticon",
-//         date: "3/26/2022",
-//         status: "active",
-//         image: customer1,
-//         action: null, 
-//   },
-//   {
-//     id: 3, 
-//     users: {
-//         name: "Saryu Sirohi",
-//         image: customer1,
-//       },
-//     mobileno: "9876543210",
-//     emailid: "saryu@targeticon",
-//     date: "3/26/2022",
-//     status: "active",
-//     image: customer1,
-//     action: null, 
-// },
-// ]
+export const advancedTable = [
+    {
+        id: 1,    
+        users: {
+            name: "Saryu Sirohi",
+            image: customer1,
+          },
+        mobileno: "9876543210",
+        emailid: "saryu@targeticon",
+        date: "3/26/2022",
+        status: "active",
+        image: customer1,
+        action: null,
+    },
+    {
+      id: 2,  
+      users: {
+        name: "Saryu Sirohi",
+        image: customer1,
+      },
+        mobileno: "9876543210",
+        emailid: "saryu@targeticon",
+        date: "3/26/2022",
+        status: "active",
+        image: customer1,
+        action: null, 
+  },
+  {
+    id: 3, 
+    users: {
+        name: "Saryu Sirohi",
+        image: customer1,
+      },
+    mobileno: "9876543210",
+    emailid: "saryu@targeticon",
+    date: "3/26/2022",
+    status: "active",
+    image: customer1,
+    action: null, 
+},
+]
 const COLUMNS = [
   {
     Header: "Id",
     accessor: "id",
-    // Cell: (row) => {
-    //   return <span>{row?.cell?.value}</span>;
-    // },
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
   }, 
   {
     Header: "Users",
@@ -72,13 +72,13 @@ const COLUMNS = [
           <span className="inline-flex items-center">
             <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
               <img
-                src={userProfile}
+                src={row?.cell?.value.image}
                 alt=""
                 className="object-cover w-full h-full rounded-full"
               />
             </span>
             <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-              {name}
+              {row?.cell?.value.name}
             </span>
           </span>
         </div>
@@ -87,17 +87,17 @@ const COLUMNS = [
   }, 
   {
     Header: "Mobile Number",
-    accessor: "mobileNumber",
-    // Cell: (row) => {
-    //   return <span>{row?.cell?.value}</span>;
-    // },
+    accessor: "mobileno",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
   },  
   {
     Header: "Email Id",
-    accessor: "emailId",
-    // Cell: (row) => {
-    //   return <span>{row?.cell?.value}</span>;
-    // },
+    accessor: "emailid",
+    Cell: (row) => {
+      return <span>{row?.cell?.value}</span>;
+    },
   },
   {
     Header: "date",
@@ -166,24 +166,9 @@ const COLUMNS = [
   },
 ];
 
-const ViewAllUsers = ({ title = "View All Users" }) => {  
-
-  const [userData, setUseData] = useState([]);
-
-  useEffect(() => {
-    // Make a GET request to your API
-    axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/user/v1/get-all-user-admin')
-      .then(response => {
-        // Assuming the data is in response.data.data
-        setUseData(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
+const ViewAllUsers = ({ title = "View All Users" }) => { 
   const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => userData, []);
+  const data = useMemo(() => advancedTable, []);
 
   const tableInstance = useTable(
     {
