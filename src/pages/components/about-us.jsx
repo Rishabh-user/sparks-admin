@@ -7,53 +7,36 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
 import { BASE_URL } from "../../api/api";
-import axios from 'axios';
 
 const AboutUs = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected image file
-  const [imageUrl, setImageUrl] = useState("");
-  const [dataLoaded, setDataLoaded] = useState("false");
- // const [isEditMode, setIsEditMode] = useState(true); // State variable to control edit mode
-  
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      console.error('Access token not found.');
-      setIsLoading(false);
-      return;
-    } 
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`, {
-          headers: {
-            
-            'Authorization': `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-  
-        if (response.status !== 200) {
-          throw new Error(`Request failed with status: ${response.status}`);
+    // Fetch the initial data from the GET API
+    fetch(`${BASE_URL}/getaboutus-pp-tc?type=aboutus`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch data");
         }
-  
-        const data = response.data.data;
-        setTitle(data.title);
-        setDescription(data.description);
-        setImageUrl(data.imageUrl);
+      })
+      .then((data) => {
+        // Populate the fields with the data from the GET request
+        setTitle(data.data.title);
+        setDescription(data.data.description);
+        // You may need to set selectedFile based on the image URL if needed
         setDataLoaded(true);
-        //console.log(data.imageUrl);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Error:", error);
-      }
-    };
-  
-    fetchData();
+        showAlert("error", "Failed to fetch data");
+      });
   }, []);
 
-  
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -64,10 +47,6 @@ const AboutUs = () => {
 
   const handleImageChange = (e) => {
     setSelectedFile(e.target.files[0]);
-
-    const url = URL.createObjectURL(e.target.files[0]);
-      setImageUrl(url);
-
   };
 
   const handleSubmit = async () => {
@@ -116,6 +95,7 @@ const AboutUs = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+      showAlert("error", "An error occurred");
     }
   };
 
@@ -128,53 +108,52 @@ const AboutUs = () => {
     });
   };
 
+  if (!dataLoaded) {
+    // Display a loading indicator while data is being fetched
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Card title="About Us">
-        <div className="space-y-5">         
+        <div className="space-y-5">
           <Textinput
             label="Title"
             id="formatter-pn"
             type="text"
             placeholder=""
-            
-            value={title}
             defaultValue={title}
             onChange={handleTitleChange}
-          />         
+          />
           <div>
             <label className="form-label" htmlFor="description">Description</label>     
             <CKEditor
               data={description}
               onChange={handleDescriptionChange}
-            />       
+            />
+            {description}
             <CKEditor
               id="full-featured-non-premium"
               editor={ClassicEditor}
               data={description}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                setDescription("description", data);
+                setValue("description", data);
               }}
             />
           </div>
           <div className="xl:col-span-2 col-span-1">
-            <label className="form-label">Upload Banner Image</label>            
+            <label className="form-label">Upload Banner Image</label>
             <Fileinput
               name="basic"
-              type="url"
-              value={imageUrl}
-              defaultValue={imageUrl}
               selectedFile={selectedFile}
-              placeholder={imageUrl}
               onChange={handleImageChange}
-            />             
-          </div>          
+            />
+          </div>
           <div className="d-flex justify-content-end text-right">
             <Button text="Save" className="btn-primary" onClick={handleSubmit} />
-         
-          </div>          
-        </div>      
+          </div>
+        </div>
       </Card>
     </div>
   );

@@ -12,7 +12,7 @@ const Textinput = ({
   register,
   name,
   readonly,
-  value,
+  value = "",
   error,
   icon,
   disabled,
