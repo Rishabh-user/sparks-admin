@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+
+  "proxy": "http://45.456.200.5:7000/",
+
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +14,6 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^39.0.2",
-    
     "@fullcalendar/core": "^6.1.4",
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
@@ -34,6 +37,7 @@
     "d3-array": "^3.2.2",
     "dayjs": "^1.11.7",
     "framer-motion": "^10.12.12",
+    "http-proxy-middleware": "^2.0.6",
     "leaflet": "^1.9.3",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

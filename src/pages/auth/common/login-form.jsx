@@ -6,50 +6,51 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@/components/ui/Checkbox";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { handleLogin } from "./store";
 import { toast } from "react-toastify";
 import axios from "axios";
+
 const schema = yup
   .object({
     email: yup.string().email("Invalid email").required("Email is Required"),
     password: yup.string().required("Password is Required"),
   })
   .required();
+
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
-    //
     mode: "all",
   });
-  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(
+      const response = await axios.post(
         'http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/auth/v1/admin/login/',
         {
-          method: 'POST',
+          userName: data.email, // Assuming "email" corresponds to the user's email.
+          password: data.password,
+        },
+        {
           headers: {
             'Content-Type': 'application/json',
             'accept': '*/*',
           },
-          body: JSON.stringify({
-            userName: data.email, // Assuming "email" corresponds to the user's email.
-            password: data.password,
-          }),
         }
       );
 
-      if (response.ok) {
-        const responseData = await response.json();
-        const accessToken = responseData.data.accessToken;
-        
+      if (response.status === 200) {
+        const accessToken = response.data.data.accessToken;
+
+        // Store the token in localStorage
         localStorage.setItem('accessToken', accessToken);
 
         dispatch(handleLogin(true));
