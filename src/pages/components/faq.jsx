@@ -14,7 +14,7 @@ import Modal from "@/components/ui/Modal";
 import Accordion from "@/components/ui/Accordion";
 
 
-const Faq = () => {
+const Faq = ({ items }) => {
   const [faqItems, setFaqItems] = useState([
     {
       number: 1,
@@ -22,54 +22,37 @@ const Faq = () => {
       description: 'qwerty123',
     },
   ]);
+  const [accordionData, setAccordionData] = useState([]);
   const { register, control, handleSubmit, reset, trigger, setError } = useForm({
     defaultValues: {
       test: [{ title: "Faq Title", description: "Faq Description" }],
     },
   });
-  const fetchFAQsFromAPI = async () => {
-    const accessToken = localStorage.getItem('accessToken');   
-    const headers = {
-      'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Authorization': `Bearer ${accessToken}`, 
-      'Content-Type': 'application/json', 
-    };
-    try {
-      const response = await axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/get-allfaq', {
-        headers: headers,
-      });
-      return response.data.data; // Assuming the FAQs are in response.data.data
-      
-    } catch (error) {
-      console.error('Error fetching FAQs:', error);
-      return []; // Return an empty array in case of an error
-    }
-  };
-
-  const fetchFAQs = async () => {
-    const fetchedFAQs = await fetchFAQsFromAPI();
-    
-    setFaqItems(fetchedFAQs.data);
-    console.log(fetchedFAQs);
-  };
-
   useEffect(() => {
-    fetchFAQs(); // Fetch FAQs when the component mounts
+    // Replace 'API_URL' with your API endpoint URL
+    axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/get-allfaq')
+      .then((response) => {
+        
+        setAccordionData(response.data.data); // Assuming your API returns an array of objects
+        console.log(accordionData);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   const handleFormSubmit = async (data, { setValue }) => {
     const newFaq = {
       number: faqItems.length + 1,
-      title: data.test[0].title || "",
-      description: data.test[0].description || "",
+      question: data.test[0].title || "", 
+      answer: data.test[0].description || "", 
     };
   
     // You can add validation here before adding the new FAQ
-    if (!newFaq.title || !newFaq.description) {
+    if (!newFaq.question || !newFaq.answer) {
       setError("test[0].title", {
         type: "manual",
-        message: "Title and description are required.",
+        message: "Question and answer are required.",
       });
       return;
     }
@@ -114,7 +97,7 @@ const Faq = () => {
               />
             }
           >
-            {/* <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
               <div className="lg:grid-cols-1 md:grid-cols-1 grid-cols-1 grid gap-5 mb-5 last:mb-0">
                 <div className="flex justify-between items-end space-x-5">
                   <div className="flex-1">
@@ -130,53 +113,55 @@ const Faq = () => {
                 <div className="fromGroup">
                   <label className="form-label">Answer</label>
                   <Controller
-                      name={`test[${0}].description`} // Use backticks for template literal
-                      control={control}
-                      defaultValue={faqItems[0].description} // Set the defaultValue from the faqItems state
-                      render={({ field }) => (
-                        <CKEditor
-                          data={field.value}
-                          onChange={(event) => field.onChange(event.editor.getData())}
-                        />
-                      )}
+                    name={`test[0].description`}
+                    control={control}
+                    defaultValue={faqItems[0].answer} // Set the defaultValue from the faqItems state
+                    render={({ field }) => (
+                      <CKEditor
+                        data={field.value}
+                        onChange={(event) => field.onChange(event.editor.getData())}
+                      />
+                    )}
                   />
-                </div>  
+                </div>
                 <div className="fromGroup text-end">
                   <Button type="submit" text="Save" className="btn-primary btn-sm" />
                 </div>
               </div>
-            </form> */}
+            </form>
           </Modal>
         }
       >
         {/* <div className="">
           <Accordion items={items} />
         </div> */}
+        <Accordion items={accordionData} />
+        <div>
+            {items.map((item, index) => (
+            <div key={index}>
+              <div>{item.data.question}</div>
+              <div>{item.data.answer}</div>
+            </div>
+          ))}
+        </div>
+
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                {faqItems && faqItems.length > 0 ? (
-                  faqItems.map((item, index) => (
+                { faqItems.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id ? item.id.toString() : `item-${index}`} index={index}>
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <Accordion items={[
-                            {
-                              title: `${item?.questionSeqno || ''}. ${item?.question || ''}`,
-                              description: item?.answer || '',
-                            },
-                          ]} />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
-                ) : (
-                  <p>No FAQs available.</p>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        
+                      </div>
+                    )}
+                  </Draggable>
+                  )                
                 )}
                 {provided.placeholder}
               </div>

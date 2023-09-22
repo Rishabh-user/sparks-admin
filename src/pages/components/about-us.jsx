@@ -131,7 +131,7 @@ const AboutUs = () => {
               data={description}
               onChange={handleDescriptionChange}
             />
-            {description}
+            {/* {description} */}
             <CKEditor
               id="full-featured-non-premium"
               editor={ClassicEditor}

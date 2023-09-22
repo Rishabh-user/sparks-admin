@@ -17,32 +17,20 @@ import Modal from "@/components/ui/Modal";
 import { BASE_URL } from "../../api/api";
 import Fileinput from "@/components/ui/Fileinput";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 //import GlobalFilter from "./GlobalFilter";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import customer1 from "@/assets/images/all-img/customer_1.png";
 import { Link } from "react-router-dom";
-const COLUMNS = [
-  {
-    Header: 'ID',
-    accessor: 'id',
-  },
-  
-  {
-    Header: 'Email',
-    accessor: 'email',
-  },
-  
-  {
-    Header: 'Mobile Number',
-    accessor: 'mobileNumber',
-  },
-  // Add other columns as needed
-];
+
 
 const Admin = ({ title = "View All Admins" }) => { 
   const [password, setPassword] = useState('');
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [mobile, setMobile] = useState('');
    const generatePassword = () => {
     const length = 12; // Specify the desired length of the password
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?'; // Define the character set for the password
@@ -52,9 +40,83 @@ const Admin = ({ title = "View All Admins" }) => {
       const randomIndex = Math.floor(Math.random() * charset.length);
       newPassword += charset.charAt(randomIndex); // Use charAt to access characters at the specified index
     }
-
     setPassword(newPassword);
   };
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleMobileChange = (e) => {
+    setMobile(e.target.value);
+  };
+  const handleImageChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+  const handleSubmit = async () => {
+    try {
+      if (!selectedFile) {
+        showAlert("error", "Please select an image");
+        return;
+      }
+
+      // Upload the image first
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const imageUploadResponse = await fetch(`${BASE_URL}/upload-image/adminuser`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!imageUploadResponse.ok) {
+        showAlert("error", "Image upload failed");
+        return;
+      }
+
+      const imageUploadData = await imageUploadResponse.json();
+
+      // Then submit the rest of the data including the image URL
+      const adminData = {
+        name: name,
+        email: email,
+        password: password,
+        mobileNumber: mobile,
+        imageURL: imageUploadData.data.url, // Use the URL from the image upload response
+      };
+
+      const response = await fetch('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/save-user', {
+        method: "POST",
+        body: JSON.stringify(adminData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        showAlert("success", "User Added Successfully");
+      } else {
+        showAlert("error", "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      showAlert("error", "An error occurred");
+    }
+  };
+
+  const showAlert = (icon, text) => {
+    Swal.fire({
+      title: 'Success',
+      text: text,
+      icon: icon,
+      confirmButtonText: 'OK!',
+    });
+  };
+  // Get All Admin
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,7 +132,7 @@ const Admin = ({ title = "View All Admins" }) => {
       headers: headers,
     })    
       .then((response) => {
-        const { data } = response.data.data;
+        const { data } = response.data;
         setUserData(data);
         setIsLoading(false);
       })
@@ -79,6 +141,81 @@ const Admin = ({ title = "View All Admins" }) => {
         setIsLoading(false);
       });
   }, []);
+ // End
+  const COLUMNS = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+      Cell: (row) => {
+        return (
+          <div>
+            <span className="inline-flex items-center">
+              <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+                <img
+                  src={row?.row?.original?.imageUrl}
+                  alt=""
+                  className="object-cover w-full h-full rounded-full"
+                />
+              </span>
+              <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+                {row?.value}
+              </span>
+            </span>
+          </div>
+        );
+      },
+    }, 
+    {
+      Header: 'Mobile Number',
+      accessor: 'mobileNumber',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: "Date",
+      accessor: "createdDate", 
+      Cell: (row) => {
+        const formattedDate = new Date(row?.row?.original?.createdDate).toLocaleDateString();        
+        return (
+          <div className="text-sm text-slate-600 dark:text-slate-300">
+            {formattedDate}
+          </div>
+        );
+      },
+    },
+    {
+      Header: "status",
+      accessor: "status",
+      Cell: (row) => {
+        return (
+          <span className="block w-full">
+            <span
+              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+                row?.cell?.value === "active"
+                  ? "text-success-500 bg-success-500"
+                  : ""
+              }
+              ${
+                row?.cell?.value === "inactive"
+                  ? "text-danger-500 bg-danger-500"
+                  : ""
+              }
+              
+               `}
+            >
+              {row?.cell?.value}
+            </span>
+          </span>
+        );
+      }
+    }    
+  ];
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => userData, []);
 
@@ -152,6 +289,7 @@ const Admin = ({ title = "View All Admins" }) => {
                     id="a_name"
                     type="text"
                     placeholder=""
+                    onChange={handleNameChange}
                 />
             </div>
             <div className="mb-4">
@@ -160,6 +298,7 @@ const Admin = ({ title = "View All Admins" }) => {
                     id="email"
                     type="email"
                     placeholder=""
+                    onChange={handleEmailChange}
                 />
             </div>
             <div className="flex mb-4 space-y-4 items-end">
@@ -170,7 +309,8 @@ const Admin = ({ title = "View All Admins" }) => {
                     type="text"
                     value={password}
                     defaultValue={password}  
-                    placeholder=""                    
+                    placeholder=""
+                    onChange={handlePasswordChange}                    
                 />
               </div>                
               <div>
@@ -187,19 +327,21 @@ const Admin = ({ title = "View All Admins" }) => {
                     id="mobile_no"
                     type="number"
                     placeholder=""
+                    onChange={handleMobileChange}
                 />
             </div>
             <div className="fromGroup xl:col-span-2 col-span-1 mb-4">
                 <label className="form-label">Upload Admin image</label>                
                 <Fileinput                  
-                   
+                   selectedFile={selectedFile}
+                   onChange={handleImageChange}
                 />
             </div>
             <div className="fromGroup xl:col-span-2 col-span-1 text-right">
               <Button
                 text="Save"
-                type="submit"
-                className="btn-dark"                
+                className="btn-dark"  
+                onClick={handleSubmit}              
               />              
             </div>
           </form>
