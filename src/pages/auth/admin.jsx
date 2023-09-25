@@ -81,12 +81,12 @@ const Admin = ({ title = "View All Admins" }) => {
       const imageUploadData = await imageUploadResponse.json();
 
       // Then submit the rest of the data including the image URL
-      const adminData = {
+      const adminData = {       
         name: name,
         email: email,
         password: password,
         mobileNumber: mobile,
-        imageURL: imageUploadData.data.url, // Use the URL from the image upload response
+        imageUrl: imageUploadData.data.url, // Use the URL from the image upload response
       };
 
       const response = await fetch('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/save-user', {
@@ -118,13 +118,13 @@ const Admin = ({ title = "View All Admins" }) => {
   };
   // Get All Admin
   const [userData, setUserData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => { 
-    const accessToken = localStorage.getItem('accessToken');   
+    //const accessToken = localStorage.getItem('accessToken');   
     const headers = {
       'Accept': 'application/json',
-      'Authorization': `Bearer ${accessToken}`, 
+      //'Authorization': `Bearer ${accessToken}`, 
       'Content-Type': 'application/json', 
     };
     
@@ -132,13 +132,14 @@ const Admin = ({ title = "View All Admins" }) => {
       headers: headers,
     })    
       .then((response) => {
+        console.log(response.data);
         const { data } = response.data;
         setUserData(data);
-        setIsLoading(false);
+        //setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-        setIsLoading(false);
+        //setIsLoading(false);
       });
   }, []);
  // End

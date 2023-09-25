@@ -14,7 +14,7 @@ import Modal from "@/components/ui/Modal";
 import Accordion from "@/components/ui/Accordion";
 
 
-const Faq = ({ items }) => {
+const Faq = () => {
   const [faqItems, setFaqItems] = useState([
     {
       number: 1,
@@ -22,23 +22,40 @@ const Faq = ({ items }) => {
       description: 'qwerty123',
     },
   ]);
-  const [accordionData, setAccordionData] = useState([]);
   const { register, control, handleSubmit, reset, trigger, setError } = useForm({
     defaultValues: {
       test: [{ title: "Faq Title", description: "Faq Description" }],
     },
   });
-  useEffect(() => {
-    // Replace 'API_URL' with your API endpoint URL
-    axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/get-allfaq')
-      .then((response) => {
-        
-        setAccordionData(response.data.data); // Assuming your API returns an array of objects
-        console.log(accordionData);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+  const fetchFAQsFromAPI = async () => {
+    const accessToken = localStorage.getItem('accessToken');   
+    const headers = {
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${accessToken}`, 
+      'Content-Type': 'application/json', 
+    };
+    try {
+      const response = await axios.get('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/get-allfaq', {
+        headers: headers,
       });
+      return response.data; // Assuming the FAQs are in response.data.data
+      
+    } catch (error) {
+      console.error('Error fetching FAQs:', error);
+      return []; // Return an empty array in case of an error
+    }
+  };
+
+  const fetchFAQs = async () => {
+    const fetchedFAQs = await fetchFAQsFromAPI();
+    
+    setFaqItems(fetchedFAQs.data);
+    console.log(fetchedFAQs.data);
+  };
+
+  useEffect(() => {
+    fetchFAQs(); // Fetch FAQs when the component mounts
   }, []);
 
   const handleFormSubmit = async (data, { setValue }) => {
@@ -135,16 +152,7 @@ const Faq = ({ items }) => {
         {/* <div className="">
           <Accordion items={items} />
         </div> */}
-        <Accordion items={accordionData} />
-        <div>
-            {items.map((item, index) => (
-            <div key={index}>
-              <div>{item.data.question}</div>
-              <div>{item.data.answer}</div>
-            </div>
-          ))}
-        </div>
-
+        
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -157,7 +165,12 @@ const Faq = ({ items }) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        
+                        <Accordion key={`accordion-${item.id}`} items={[
+                          {
+                            title: `${item.questionSeqno}. ${item.question}`,
+                            description: item.answer,
+                          },
+                        ]} />
                       </div>
                     )}
                   </Draggable>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Textinput from "@/components/ui/Textinput";
 import Fileinput from "@/components/ui/Fileinput";
-import { CKEditor } from 'ckeditor4-react';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "@/components/ui/Button";
 import Swal from 'sweetalert2';
 import { BASE_URL } from "../../api/api";
@@ -138,9 +139,16 @@ const PrivacyPolicy = () => {
             <label className="form-label" htmlFor="description">Description</label>
             <CKEditor
               data={description}
-              readonly={!isEditMode || !dataLoaded} // Set readOnly based on edit mode
               onChange={handleDescriptionChange}
-              //config={{ readOnly: true }}
+            />
+            <CKEditor
+              id="full-featured-non-premium"
+              editor={ClassicEditor}
+              data={description}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDescription(data);
+              }}
             />
           </div>
           <div className="xl:col-span-2 col-span-1">

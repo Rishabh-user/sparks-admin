@@ -77,7 +77,7 @@ const AboutUs = () => {
         type: "aboutus",
         title: title,
         description: description,
-        imageURL: imageUploadData.data.url, // Use the URL from the image upload response
+        imageURL: imageUploadData.data.url, 
       };
 
       const response = await fetch(`${BASE_URL}/aboutus-pp-tc`, {
@@ -131,14 +131,13 @@ const AboutUs = () => {
               data={description}
               onChange={handleDescriptionChange}
             />
-            {/* {description} */}
             <CKEditor
               id="full-featured-non-premium"
               editor={ClassicEditor}
               data={description}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                setValue("description", data);
+                setDescription(data);
               }}
             />
           </div>
