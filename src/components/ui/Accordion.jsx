@@ -6,15 +6,20 @@ const Accordion = ({ items, className = "space-y-5" }) => {
   const [open, setOpen] = useState(false);
 
   const toggleAccrodian = (index) => {
-    setActiveIndex(index);
-    setOpen(!open);
+    // setActiveIndex(index);
+    // setOpen(!open);
+    if (activeIndex === index) {
+      setActiveIndex(null); // Close the currently open accordion
+    } else {
+      setActiveIndex(index); // Open the clicked accordion
+    }
   };
 
   return (
     <div className={className}>
       {items.map((item, index) => (
         <div
-          className="accordion shadow-base dark:shadow-none rounded-md"
+          className="accordion shadow-base dark:shadow-none rounded-md mb-4"
           key={index}
         >
           <div
