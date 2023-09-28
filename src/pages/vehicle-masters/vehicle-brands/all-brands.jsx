@@ -110,11 +110,11 @@ const COLUMNS = [
                 type="button"
                 onClick={() => toggleRow(index)}
               >
-                {isEnabled ? (
+                {/* {isEnabled ? (
                   <Icon icon="heroicons:eye" />
                 ) : (
                   <Icon icon="heroicons:eye-slash" />
-                )}
+                )} */}
               </button>
           </Tooltip>
           <Tooltip content="Edit" placement="top" arrow animation="shift-away">

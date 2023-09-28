@@ -3,15 +3,9 @@ import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import Button from "@/components/ui/Button";
-import {
-  useTable,
-  useRowSelect,
-  useSortBy,
-  useGlobalFilter,
-  usePagination,
-} from "react-table";
 import Textinput from "@/components/ui/Textinput";
-//import DropZone from "../forms/file-input/DropZone";
+import Table from "../../components/ui/use-table";
+
 // Modal
 import Modal from "@/components/ui/Modal";
 import { BASE_URL } from "../../api/api";
@@ -19,13 +13,10 @@ import Fileinput from "@/components/ui/Fileinput";
 import axios from "axios";
 import Swal from 'sweetalert2';
 
-//import GlobalFilter from "./GlobalFilter";
-import GlobalFilter from "../table/react-tables/GlobalFilter";
-import customer1 from "@/assets/images/all-img/customer_1.png";
 import { Link } from "react-router-dom";
 
 
-const Admin = ({ title = "View All Admins" }) => { 
+const Admin = ({ title = "View All Admins"}) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -89,7 +80,7 @@ const Admin = ({ title = "View All Admins" }) => {
         imageUrl: imageUploadData.data.url, // Use the URL from the image upload response
       };
 
-      const response = await fetch('http://ec2-3-6-158-164.ap-south-1.compute.amazonaws.com:8080/api/admin/v1/save-user', {
+      const response = await fetch(`${BASE_URL}/save-user`, {
         method: "POST",
         body: JSON.stringify(adminData),
         headers: {
@@ -117,14 +108,14 @@ const Admin = ({ title = "View All Admins" }) => {
     });
   };
   // Get All Admin
-  const [userData, setUserData] = useState([]);
-  //const [isLoading, setIsLoading] = useState(true);
+  const [userAdmin, setUserAdmin] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => { 
-    //const accessToken = localStorage.getItem('accessToken');   
+    const accessToken = localStorage.getItem('accessToken');   
     const headers = {
       'Accept': 'application/json',
-      //'Authorization': `Bearer ${accessToken}`, 
+      'Authorization': `Bearer ${accessToken}`, 
       'Content-Type': 'application/json', 
     };
     
@@ -134,131 +125,98 @@ const Admin = ({ title = "View All Admins" }) => {
       .then((response) => {
         console.log(response.data);
         const { data } = response.data;
-        setUserData(data);
-        //setIsLoading(false);
+        setUserAdmin(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-        //setIsLoading(false);
+        setIsLoading(false);
       });
-  }, []);
- // End
-  const COLUMNS = [
-    {
-      Header: 'ID',
-      accessor: 'id',
-    },
-    {
-      Header: 'Name',
-      accessor: 'name',
-      Cell: (row) => {
-        return (
-          <div>
-            <span className="inline-flex items-center">
-              <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
-                <img
-                  src={row?.row?.original?.imageUrl}
-                  alt=""
-                  className="object-cover w-full h-full rounded-full"
-                />
-              </span>
-              <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-                {row?.value}
-              </span>
+  }, []); 
+ const columns = React.useMemo(
+  () =>[
+  {
+    Header: 'ID',
+    accessor: 'id',
+  },
+  {
+    Header: 'Name',
+    accessor: 'name',
+    Cell: (row) => {
+      return (
+        <div>
+          <span className="inline-flex items-center">
+            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+              <img
+                src={row?.row?.original?.imageUrl}
+                alt=""
+                className="object-cover w-full h-full rounded-full"
+              />
             </span>
-          </div>
-        );
-      },
-    }, 
-    {
-      Header: 'Mobile Number',
-      accessor: 'mobileNumber',
-    },
-    {
-      Header: 'Email',
-      accessor: 'email',
-    },
-    {
-      Header: "Date",
-      accessor: "createdDate", 
-      Cell: (row) => {
-        const formattedDate = new Date(row?.row?.original?.createdDate).toLocaleDateString();        
-        return (
-          <div className="text-sm text-slate-600 dark:text-slate-300">
-            {formattedDate}
-          </div>
-        );
-      },
-    },
-    {
-      Header: "status",
-      accessor: "status",
-      Cell: (row) => {
-        return (
-          <span className="block w-full">
-            <span
-              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-                row?.cell?.value === "active"
-                  ? "text-success-500 bg-success-500"
-                  : ""
-              }
-              ${
-                row?.cell?.value === "inactive"
-                  ? "text-danger-500 bg-danger-500"
-                  : ""
-              }
-              
-               `}
-            >
-              {row?.cell?.value}
+            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+              {row?.value}
             </span>
           </span>
-        );
-      }
-    }    
-  ];
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => userData, []);
-
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
+        </div>
+      );
     },
-
-    useGlobalFilter,
-    useSortBy,
-    usePagination,
-    useRowSelect,
-
-  );
-  const {
-    getTableProps,
-    rows,
-    getTableBodyProps,
-    headerGroups,
-    footerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state,
-    gotoPage,
-    pageCount,
-    setPageSize,
-    setGlobalFilter,
-    prepareRow,
-  } = tableInstance;
-
-  const { 
-    globalFilter, 
-    pageIndex, 
-    pageSize } = state;
-
-   
+  }, 
+  {
+    Header: 'Mobile Number',
+    accessor: 'mobileNumber',
+  },
+  {
+    Header: 'Email',
+    accessor: 'email',
+  },
+  {
+    Header: "Date",
+    accessor: "createdDate", 
+    Cell: (row) => {
+      const formattedDate = new Date(row?.row?.original?.createdDate).toLocaleDateString();        
+      return (
+        <div className="text-sm text-slate-600 dark:text-slate-300">
+          {formattedDate}
+        </div>
+      );
+    },
+  },
   
+  {
+    Header: "action",
+    accessor: "action",
+    Cell: (row) => {
+      return (
+        <div className="flex space-x-3 rtl:space-x-reverse">
+          <Tooltip content="Disable" placement="top" arrow animation="shift-away">
+            <Link to="#" className="action-btn" type="button">
+              <Icon icon="heroicons:eye" />
+            </Link>
+          </Tooltip>
+          <Tooltip content="Edit" placement="top" arrow animation="shift-away">
+            <button className="action-btn" type="button" >
+              <Icon icon="heroicons:pencil-square" />
+            </button>
+          </Tooltip>
+          <Tooltip
+            content="Delete"
+            placement="top"
+            arrow
+            animation="shift-away"
+            theme="danger"
+          >
+            <button className="action-btn" type="button">
+              <Icon icon="heroicons:trash" />
+            </button>
+          </Tooltip>
+        </div>
+      );
+    },
+  },    
+  ],
+  []
+ )
+     
   return (
     <div>
       <Card>
@@ -273,15 +231,6 @@ const Admin = ({ title = "View All Admins" }) => {
             className="max-w-5xl"
             centered
             scrollContent
-            // footerContent={
-            //   <Button
-            //     text="Save"
-            //     className="btn-dark "
-            //     onClick={() => {
-            //       alert("use Control Modal");
-            //     }}
-            //   />
-            // }
           >
           <form >
             <div className="mb-4">
@@ -349,144 +298,8 @@ const Admin = ({ title = "View All Admins" }) => {
           </Modal>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <div className="inline-block min-w-full align-middle">
-             <div className="overflow-hidden ">
-              <table
-                className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
-                {...getTableProps}
-              >
-                <thead className="bg-slate-200 dark:bg-slate-700">
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
-                          scope="col"
-                          className=" table-th "
-                        >
-                          {column.render("Header")}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? " 🔽"
-                                : " 🔼"
-                              : ""}
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700"
-                  {...getTableBodyProps}
-                >
-                  {page.map((row) => {
-                    prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map((cell) => {
-                          return (
-                            <td {...cell.getCellProps()} className="table-td">
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>              
-            </div> 
-            
-          </div>
-        </div>
-        <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">
-          <div className=" flex items-center space-x-3 rtl:space-x-reverse">
-            <select
-              className="form-control py-2 w-max"
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-            >
-              {[10, 25, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-            <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
-              Page{" "}
-              <span>
-                {pageIndex + 1} of {pageOptions.length}
-              </span>
-            </span>
-          </div>
-          <ul className="flex items-center  space-x-3  rtl:space-x-reverse">
-            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
-              <button
-                className={` ${
-                  !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => gotoPage(0)}
-                disabled={!canPreviousPage}
-              >
-                <Icon icon="heroicons:chevron-double-left-solid" />
-              </button>
-            </li>
-            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
-              <button
-                className={` ${
-                  !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-              >
-                Prev
-              </button>
-            </li>
-            {pageOptions.map((page, pageIdx) => (
-              <li key={pageIdx}>
-                <button
-                  href="#"
-                  aria-current="page"
-                  className={` ${
-                    pageIdx === pageIndex
-                      ? "bg-sparks-900 dark:bg-slate-600  dark:text-slate-200 text-white font-medium "
-                      : "bg-slate-100 dark:bg-slate-700 dark:text-slate-400 text-slate-900  font-normal  "
-                  }    text-sm rounded leading-[16px] flex h-6 w-6 items-center justify-center transition-all duration-150`}
-                  onClick={() => gotoPage(pageIdx)}
-                >
-                  {page + 1}
-                </button>
-              </li>
-            ))}
-            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
-              <button
-                className={` ${
-                  !canNextPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
-              >
-                Next
-              </button>
-            </li>
-            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
-              <button
-                onClick={() => gotoPage(pageCount - 1)}
-                disabled={!canNextPage}
-                className={` ${
-                  !canNextPage ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                <Icon icon="heroicons:chevron-double-right-solid" />
-              </button>
-            </li>
-          </ul>
-        </div>
+        <Table columns={columns} data={userAdmin} />
+        
         {/*end*/}
       </Card>
     </div>
